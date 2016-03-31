@@ -1,6 +1,7 @@
 require "swoop/version"
 require "swoop/pbxfile"
 require "swoop/report"
+require "swoop/helper"
 
 require "thor"
 require 'xcodeproj'
@@ -10,6 +11,7 @@ require 'Logger'
 module Swoop
 
   class Reporter < Thor
+    include Helper
 
     # /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj
     # Models
@@ -28,13 +30,12 @@ module Swoop
       project_path = options[:path]
       if !File.exist? project_path
         puts "Error: missing project path :("
-        return
+        return 0
       end
 
       folder = options[:folder] || 'Classes'
 
       working_dir = get_git_root project_path
-      # g = Git.open(working_dir, :log => Logger.new(STDOUT))
       g = Git.open(working_dir)
 
       full_report = g.tags
@@ -50,7 +51,9 @@ module Swoop
         "#{date} (#{t.name}) || #{report}"
       }
 
-      puts "\n\n'#{folder}' Swoop Report"
+      g.branches[:master].checkout
+
+      puts "\nSwift Swoop Report 💪 : '#{folder}'"
       puts "=="
       puts full_report
       puts "\n"
@@ -61,14 +64,6 @@ module Swoop
 
     private
 
-    def get_git_root(project_path)
-      current_dir = `pwd`
-      project_dir = File.dirname project_path
-
-      path = `cd #{project_dir};git rev-parse --show-toplevel;cd #{current_dir}`
-      return path.strip
-    end
-
     def create_report(project_path, folder_to_report)
 
       project = Xcodeproj::Project.open(project_path)
@@ -77,9 +72,10 @@ module Swoop
       folder = project.objects
         .select { |o| o.display_name == folder_to_report }
         .first
+
       if folder.nil?
         puts "Error: no files in folder `#{folder_to_report}` were found :("
-        return
+        return 0
       end
 
       files = folder
@@ -87,8 +83,8 @@ module Swoop
         .select { |o| o.is_a?(Xcodeproj::Project::Object::PBXFileReference) }
 
       report = files.reduce({ :objc => 0, :swift => 0 }) { |memo, f|
-        memo[:objc] += 1 if f.objc?
-        memo[:swift] += 1 if f.swift?
+        memo[:objc] += f.objc_count
+        memo[:swift] += f.swift_count
         memo
       }
 
