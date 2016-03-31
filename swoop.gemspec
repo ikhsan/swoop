@@ -31,4 +31,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "thor"
   spec.add_runtime_dependency "xcodeproj"
+  spec.add_runtime_dependency "git"
 end
