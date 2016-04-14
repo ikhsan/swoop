@@ -35,6 +35,17 @@ module Swoop
 
       folder = options[:folder] || 'Classes'
 
+      summarise_report2 project_path, folder
+    end
+
+    private
+
+    def summarise_report2(project_path, folder)
+      report = create_report(project_path, folder)
+      puts report
+    end
+
+    def summarise_report(project_path, folder)
       working_dir = get_git_root project_path
       g = Git.open(working_dir)
 
@@ -48,21 +59,22 @@ module Swoop
         date = log.date.strftime("%d-%m-%Y")
         report = create_report(project_path, folder)
 
-        "#{date} (#{t.name}) || #{report}"
+        "#{report} || #{date} (#{t.name})"
       }
 
       g.branches[:master].checkout
 
-      puts "\nSwift Swoop Report 💪 : '#{folder}'"
+      report = create_report(project_path, folder)
+      date = Time.now.strftime("%d-%m-%Y")
+      full_report << "#{report} || #{date} (HEAD)"
+
+      puts "\nSwift Swoop Report  : '#{folder}'"
       puts "=="
       puts full_report
       puts "\n"
 
       return 1
-
     end
-
-    private
 
     def create_report(project_path, folder_to_report)
 

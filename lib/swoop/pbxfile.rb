@@ -1,4 +1,5 @@
 require 'xcodeproj'
+require 'swoop/sourcekitten'
 
 class Xcodeproj::Project::Object::PBXFileReference
 
@@ -15,14 +16,19 @@ class Xcodeproj::Project::Object::PBXFileReference
   end
 
   def swift_count
-    return 1 if swift?
-    return 0
+    if swift?
+      Swoop::SourceKitten.run real_path
+      1
+    end
+    0
   end
 
   def objc_count
-    return 1 if objc?
-    return 0
+    if objc?
+      Swoop::SourceKitten.run real_path
+      1
+    end
+    0
   end
-
 
 end

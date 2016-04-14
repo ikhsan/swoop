@@ -9,12 +9,12 @@ module Swoop
       @swift = hash[:swift]
 
       @total =  @objc + @swift
-      @objc_p = ((@objc * 100.0) / @total).round(2)
-      @swift_p = ((@swift * 100.0) / @total).round(2)
+      @objc_p = @objc * 100.0 / @total
+      @swift_p = @swift * 100.0 / @total
     end
 
     def to_s
-      "objc : #{objc} (#{objc_p}%) swift : #{swift} (#{swift_p}%) total : #{total}"
+      "objc : #{objc} (#{'%.02f' % objc_p}%) swift : #{swift} (#{'%.02f' % swift_p}%) total : #{total}"
     end
 
   end
