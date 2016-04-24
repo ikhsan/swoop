@@ -8,8 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@protocol ViewControllerDelegate <NSObject>
+- (void)protocolMethod;
+@end
 
+@interface ViewController : UIViewController
 
 @end
 
+@interface SpecialViewController : ViewController
+
+@end

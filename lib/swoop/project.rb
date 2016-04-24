@@ -21,8 +21,9 @@ module Swoop
 
       raise "Error: No files are found :(" if project_dir.nil?
 
-      files = project_dir.recursive_children
-        .select { |f| swift_file?(f) || objc_file?(f) }
+      files = project_dir
+        .recursive_children
+        .select { |f| valid_file? f }
         .map(&:real_path)
 
       raise "Error: No files are found :(" if files.empty?
@@ -32,16 +33,15 @@ module Swoop
 
     private
 
-    def file?(f)
-      f.is_a?(Xcodeproj::Project::Object::PBXFileReference)
+    def valid_file_extensions
+      [".swift", ".h", ".m"]
     end
 
-    def swift_file?(f)
-      file?(f) && File.extname(f.real_path) == '.swift'
-    end
+    def valid_file? (f)
+      return false unless f.is_a?(Xcodeproj::Project::Object::PBXFileReference)
 
-    def objc_file?(f)
-      file?(f) && (File.extname(f.real_path) == '.m' || File.extname(f.real_path) == '.h')
+      ext = File.extname(f.real_path)
+      valid_file_extensions.include?(ext)
     end
 
   end

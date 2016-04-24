@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-PROJECT_FIXTURE_PATH = '/Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj'
+PROJECT_FIXTURE_PATH = 'spec/fixture/Swoop/Swoop.xcodeproj'
 
 describe Swoop::Project do
 
   let(:project_path) { PROJECT_FIXTURE_PATH }
-  let(:directory) { 'Classes/Models' }
+  let(:directory) { 'Swoop/Model' }
   subject { Swoop::Project.new(project_path, directory) }
 
   describe "initialization" do
@@ -14,8 +14,8 @@ describe Swoop::Project do
         expect(subject.path).to eq(PROJECT_FIXTURE_PATH)
       end
 
-      it "should have correct directory from default param" do
-        expect(subject.directory).to eq('Classes/Models')
+      it "should have correct directory" do
+        expect(subject.directory).to eq('Swoop/Model')
       end
     end
 
@@ -38,7 +38,7 @@ describe Swoop::Project do
       end
 
       context "missing file" do
-        let(:project_path) { '/Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick__.xcodeproj' }
+        let(:project_path) { 'spec/fixture/Swoop/Swoop__.xcodeproj' }
 
         it 'should raise can\'t find project message' do
           expect { subject.files }.to raise_error("Error: Can't find .xcodeproj project :(")
@@ -46,7 +46,7 @@ describe Swoop::Project do
       end
 
       context "invalid project from specified path" do
-        let(:project_path) { '/Users/ikhsanassaat/Songkick/ios-app/Songkick/main.m' }
+        let(:project_path) { 'spec/fixture/Swoop/Swoop/main.m' }
 
         it 'should raise invalid project message' do
           expect { subject.files }.to raise_error("Error: Invalid .xcodeproj file :(")
@@ -63,10 +63,19 @@ describe Swoop::Project do
     end
 
     context "when projects are valid" do
-      it "should have correct file's paths" do
+      it "should have correct filepaths" do
+        fixture_files = [
+          'ViewController.h',
+          'ViewController.m',
+          'ViewController+Utility.h',
+          'ViewController+Utility.m',
+          'User.swift',
+          'User+Utility.swift',
+          'Tester.swift'
+        ]
 
-        puts subject.files.count
-
+        files = subject.files.map { |e| File.basename e }
+        expect(files).to eq(fixture_files)
       end
     end
 
