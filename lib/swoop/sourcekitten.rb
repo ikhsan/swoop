@@ -6,6 +6,7 @@ module Swoop
   class SourceKitten
 
     # Run sourcekitten with given arguments and return STDOUT
+    # Swoop::SourceKitten.run real_path
     def self.run file_path
       bin_path = Pathname(__FILE__).parent + 'SourceKitten/bin/sourcekitten'
 

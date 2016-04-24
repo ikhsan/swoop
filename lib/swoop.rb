@@ -1,6 +1,6 @@
 require "swoop/version"
-require "swoop/pbxfile"
 require "swoop/report"
+require "swoop/project"
 require "swoop/helper"
 
 require "thor"
@@ -77,26 +77,12 @@ module Swoop
     end
 
     def create_report(project_path, folder_to_report)
+      project = Project.new(project_path, folder_to_report)
 
-      project = Xcodeproj::Project.open(project_path)
-
-      # Get the files from folder
-      folder = project.objects
-        .select { |o| o.display_name == folder_to_report }
-        .first
-
-      if folder.nil?
-        puts "Error: no files in folder `#{folder_to_report}` were found :("
-        return 0
-      end
-
-      files = folder
-        .recursive_children
-        .select { |o| o.is_a?(Xcodeproj::Project::Object::PBXFileReference) }
-
+      files = project.files
       report = files.reduce({ :objc => 0, :swift => 0 }) { |memo, f|
-        memo[:objc] += f.objc_count
-        memo[:swift] += f.swift_count
+        memo[:swift] += 1 if File.extname(f) == ".swift"
+        memo[:objc] += 1 if File.extname(f) == ".m"
         memo
       }
 
