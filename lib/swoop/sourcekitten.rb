@@ -5,23 +5,41 @@ module Swoop
 
   class SourceKitten
 
+    # name : String
+    # type : protocol, extension/category, class, struct
+    # lang : swift, objc
+
     # Run sourcekitten with given arguments and return STDOUT
     # Swoop::SourceKitten.run real_path
+
     def self.run file_path
-      bin_path = Pathname(__FILE__).parent + 'SourceKitten/bin/sourcekitten'
-
       output = `#{bin_path} structure --file #{file_path}`
+      extract(output)
+    end
 
+    private
+
+    def self.bin_path
+      Pathname(__FILE__).parent + 'SourceKitten/bin/sourcekitten'
+    end
+
+    def self.extract(output)
       json_output = JSON.parse(output)
+      substructures = json_output["key.substructure"]
 
-      substructure = json_output["key.substructure"]
+      substructures.map { |s| self.parse s }
+    end
 
-      unless substructure.nil?
-        output = substructure.map { |s| s['key.kind'] }
-      end
+    def self.parse(substructure)
+      kind = substructure['key.kind']
+      type = kind.split('.').last
+      lang = kind.split('.')[2]
 
-      # puts "#{File.basename(file_path)} - #{subsctructure.count}" unless subsctructure.nil?
-      puts output
+      {
+        :name => substructure['key.name'],
+        :lang => lang,
+        :type => type
+      }
     end
 
   end

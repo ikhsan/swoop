@@ -9,7 +9,7 @@ Swift objective-C comparison report (swoop)
   [x] add real xcode project as a fixture
   [x] use path like `classes/models`
 - analyse all files (sourcekitten)
-  - count protocol, classes and categories for each languages
+  - count protocol, classes, struct and categories for each languages
   - process data, called it as a 'report snapshot'
 - collate through time (git)
   - get current branch

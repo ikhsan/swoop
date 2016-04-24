@@ -2,6 +2,7 @@ require "swoop/version"
 require "swoop/report"
 require "swoop/project"
 require "swoop/helper"
+require "swoop/sourcekitten"
 
 require "thor"
 require 'xcodeproj'
@@ -14,8 +15,7 @@ module Swoop
     include Helper
 
     # /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj
-    # Models
-    # bundle exec bin/swoop report --path /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj --folder Models
+    # bundle exec bin/swoop report --path /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj --folder 'Classes/Models'
 
     desc "report", "Create objc swift comparison report for classes from an Xcode project"
     option :path
