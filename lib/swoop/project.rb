@@ -17,15 +17,31 @@ module Swoop
       raise "Error: Invalid .xcodeproj file :(" unless File.extname(@path) == '.xcodeproj'
 
       project = Xcodeproj::Project.open @path
+      project_dir = project[directory]
 
-      project[directory].recursive_children
-        .select { |f|
-          is_a_file = f.is_a? Xcodeproj::Project::Object::PBXFileReference
-          swift = File.extname(f.real_path) == '.swift'
-          objc = File.extname(f.real_path) == '.m'
-          is_a_file && (swift || objc)
-        }
-        .map(&:display_name)
+      raise "Error: No files are found :(" if project_dir.nil?
+
+      files = project_dir.recursive_children
+        .select { |f| swift_file?(f) || objc_file?(f) }
+        .map(&:real_path)
+
+      raise "Error: No files are found :(" if files.empty?
+
+      files
+    end
+
+    private
+
+    def file?(f)
+      f.is_a?(Xcodeproj::Project::Object::PBXFileReference)
+    end
+
+    def swift_file?(f)
+      file?(f) && File.extname(f.real_path) == '.swift'
+    end
+
+    def objc_file?(f)
+      file?(f) && (File.extname(f.real_path) == '.m' || File.extname(f.real_path) == '.h')
     end
 
   end

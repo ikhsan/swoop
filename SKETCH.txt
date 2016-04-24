@@ -2,12 +2,12 @@ Swift objective-C comparison report (swoop)
 ==
 
 - get appropriate files from specified folder (xcodeproj)
-  - path validations
-    [] check if project path exists
+  [] path validations
+    [x] check if project path exists
     [x] default values for folders
-    [] raise exception when xcodeproj is missing or nil
-  - add real xcode project as a fixture
-  - use path like `classes/models`
+    [x] raise exception when xcodeproj is missing or nil
+  [] add real xcode project as a fixture
+  [x] use path like `classes/models`
 - analyse all files (sourcekitten)
   - count protocol, classes and categories for each languages
   - process data, called it as a 'report snapshot'
