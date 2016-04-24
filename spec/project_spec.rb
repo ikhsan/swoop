@@ -57,7 +57,7 @@ describe Swoop::Project do
         let(:directory) { 'classes' }
 
         it 'should raise files not found' do
-          expect { subject.files }.to raise_error("Error: No files are found :(")
+          expect { subject.files }.to raise_error("Error: Can't find directory :(")
         end
       end
     end

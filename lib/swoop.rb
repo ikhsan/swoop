@@ -21,19 +21,8 @@ module Swoop
     option :path
     option :folder
     def report
-
-      if options[:path].nil?
-        puts "Error: missing xcodeproj path :("
-        return
-      end
-
       project_path = options[:path]
-      if !File.exist? project_path
-        puts "Error: missing project path :("
-        return 0
-      end
-
-      folder = options[:folder] || 'Classes'
+      folder = options[:folder]
 
       summarise_report2 project_path, folder
     end

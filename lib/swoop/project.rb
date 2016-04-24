@@ -19,7 +19,7 @@ module Swoop
       project = Xcodeproj::Project.open @path
       project_dir = project[directory]
 
-      raise "Error: No files are found :(" if project_dir.nil?
+      raise "Error: Can't find directory :(" if project_dir.nil?
 
       files = project_dir
         .recursive_children
