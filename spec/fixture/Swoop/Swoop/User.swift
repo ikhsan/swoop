@@ -19,3 +19,9 @@ class User {
 }
 
 class Admin : User { }
+
+extension User {
+    var fullName : String {
+        return firstName + " " + lastName
+    }
+}

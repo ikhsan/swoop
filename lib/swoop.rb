@@ -16,6 +16,7 @@ module Swoop
 
     # /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj
     # bundle exec bin/swoop report --path /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj --folder 'Classes/Models'
+    # bundle exec bin/swoop report --path spec/fixture/Swoop/Swoop.xcodeproj --folder 'Swoop/Model'
 
     desc "report", "Create objc swift comparison report for classes from an Xcode project"
     option :path
@@ -65,11 +66,18 @@ module Swoop
       return 1
     end
 
+    def collate_entities(entities)
+      swift = entities.select(&:swift?)
+      puts swift
+    end
+
     def create_report(project_path, folder_to_report)
       project = Project.new(project_path, folder_to_report)
 
       files = project.files
       report = files.reduce({ :objc => 0, :swift => 0 }) { |memo, f|
+        collate_entities(SourceKitten.run f) if File.extname(f) == ".swift"
+
         memo[:swift] += 1 if File.extname(f) == ".swift"
         memo[:objc] += 1 if File.extname(f) == ".m"
         memo

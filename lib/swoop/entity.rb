@@ -15,10 +15,6 @@ module Swoop
       @name ||= @json['key.name']
     end
 
-    def kind
-      @kind ||= @json['key.kind']
-    end
-
     def language
       @language ||= kind.split('.')[2]
     end
@@ -27,8 +23,22 @@ module Swoop
       @type ||= kind.split('.').last
     end
 
+    def swift?
+      language == "swift"
+    end
+
+    def to_s
+      "#{language} - #{name} : #{type}"
+    end
+
     def ==(other)
       name == other.name && language == other.language && type == other.type
+    end
+
+    private
+
+    def kind
+      @kind ||= @json['key.kind']
     end
   end
 

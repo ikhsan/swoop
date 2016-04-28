@@ -1,62 +1,50 @@
 require 'spec_helper'
 
 describe Swoop::Entity do
+  let(:fixtures) {
+    json = File.open(path, 'rb') { |f| f.read }
+    substructures = JSON.parse(json)
+    substructures['key.substructure']
+  }
 
   context "Swift" do
-    let(:entities) { Swoop::SourceKitten.run(path) }
+    let(:path) { 'spec/fixture/user.swift.json' }
 
-    context "files with multiple classes" do
-      let(:path) { 'spec/fixture/Swoop/Swoop/User.swift' }
-      let(:admin) { double(Swoop::Entity, { 'name' => 'Admin', 'language' => 'swift', 'type' => 'class' }) }
-      let(:user) { double(Swoop::Entity, { 'name' => 'User', 'language' => 'swift', 'type' => 'class' }) }
+    context "when file has a struct" do
+      let(:subject) { Swoop::Entity.new fixtures[0] }
       let(:position) { double(Swoop::Entity, { 'name' => 'Position', 'language' => 'swift', 'type' => 'struct' }) }
 
-      it "should extract admin class" do
-        expect(entities.last).to eq(admin)
-      end
-
-      it "should extract user class" do
-        expect(entities[1]).to eq(user)
-      end
-
-      it "should extract struct" do
-        expect(entities.first).to eq(position)
+      it "should extract position struct" do
+        expect(subject).to eq(position)
       end
     end
 
-    context "subclasses" do
-      let(:path) { 'spec/fixture/Swoop/Swoop/Tester.swift' }
-      let(:tester) { double(Swoop::Entity, { 'name' => 'Tester', 'language' => 'swift', 'type' => 'class' }) }
+    context "when file has classes" do
+      let(:admin) { double(Swoop::Entity, { 'name' => 'Admin', 'language' => 'swift', 'type' => 'class' }) }
+      let(:user) { double(Swoop::Entity, { 'name' => 'User', 'language' => 'swift', 'type' => 'class' }) }
 
-      it "should extract subclasses" do
-        expect(entities.first).to eq(tester)
+      it "should extract user class correctly" do
+        subject = Swoop::Entity.new fixtures[1]
+        expect(subject).to eq(user)
+      end
+
+      it "should extract admin class correctly" do
+        subject = Swoop::Entity.new fixtures[2]
+        expect(subject).to eq(admin)
       end
     end
 
-    context "extensions" do
-      let(:path) { 'spec/fixture/Swoop/Swoop/User+Utility.swift' }
+    context "when file has an extension" do
       let(:user) { double(Swoop::Entity, { 'name' => 'User', 'language' => 'swift', 'type' => 'extension' }) }
 
-      it "should extract extension" do
-        expect(entities.first).to eq(user)
+      it "should extract admin extension correctly" do
+        subject = Swoop::Entity.new fixtures[3]
+        expect(subject).to eq(user)
       end
     end
   end
 
   context "Objective-C" do
-
-    context "files with multiple classes" do
-
-    end
-
-    context "subclasses" do
-
-    end
-
-    context "extension" do
-
-    end
-
   end
 
 end
