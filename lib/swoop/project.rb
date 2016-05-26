@@ -11,7 +11,7 @@ module Swoop
       @directory = directory
     end
 
-    def files
+    def filepaths
       raise "Error: Project path is empty :(" if @path.empty?
       raise "Error: Can't find .xcodeproj project :(" unless File.exist? @path
       raise "Error: Invalid .xcodeproj file :(" unless File.extname(@path) == '.xcodeproj'
@@ -21,14 +21,14 @@ module Swoop
 
       raise "Error: Can't find directory :(" if project_dir.nil?
 
-      files = project_dir
+      filepaths = project_dir
         .recursive_children
         .select { |f| valid_file? f }
         .map(&:real_path)
 
-      raise "Error: No files are found :(" if files.empty?
+      raise "Error: No files are found :(" if filepaths.empty?
 
-      files
+      filepaths
     end
 
     private

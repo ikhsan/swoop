@@ -35,36 +35,36 @@ module Swoop
       puts report
     end
 
-    def summarise_report(project_path, folder)
-      working_dir = get_git_root project_path
-      g = Git.open(working_dir)
-
-      full_report = g.tags
-      .select { |t| t.name.include?("v5") }
-      .map { |t|
-
-        log = t.log.first
-        g.checkout(log.sha)
-
-        date = log.date.strftime("%d-%m-%Y")
-        report = create_report(project_path, folder)
-
-        "#{report} || #{date} (#{t.name})"
-      }
-
-      g.branches[:master].checkout
-
-      report = create_report(project_path, folder)
-      date = Time.now.strftime("%d-%m-%Y")
-      full_report << "#{report} || #{date} (HEAD)"
-
-      puts "\nSwift Swoop Report  : '#{folder}'"
-      puts "=="
-      puts full_report
-      puts "\n"
-
-      return 1
-    end
+    # def summarise_report(project_path, folder)
+    #   working_dir = get_git_root project_path
+    #   g = Git.open(working_dir)
+    #
+    #   full_report = g.tags
+    #   .select { |t| t.name.include?("v5") }
+    #   .map { |t|
+    #
+    #     log = t.log.first
+    #     g.checkout(log.sha)
+    #
+    #     date = log.date.strftime("%d-%m-%Y")
+    #     report = create_report(project_path, folder)
+    #
+    #     "#{report} || #{date} (#{t.name})"
+    #   }
+    #
+    #   g.branches[:master].checkout
+    #
+    #   report = create_report(project_path, folder)
+    #   date = Time.now.strftime("%d-%m-%Y")
+    #   full_report << "#{report} || #{date} (HEAD)"
+    #
+    #   puts "\nSwift Swoop Report  : '#{folder}'"
+    #   puts "=="
+    #   puts full_report
+    #   puts "\n"
+    #
+    #   return 1
+    # end
 
     def collate_entities(entities)
       swift = entities.select(&:swift?)
@@ -75,6 +75,7 @@ module Swoop
       project = Project.new(project_path, folder_to_report)
 
       files = project.files
+
       report = files.reduce({ :objc => 0, :swift => 0 }) { |memo, f|
         collate_entities(SourceKitten.run f) if File.extname(f) == ".swift"
 

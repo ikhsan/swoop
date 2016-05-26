@@ -33,7 +33,7 @@ describe Swoop::Project do
         let(:project_path) { '' }
 
         it 'should raise empty project message' do
-          expect { subject.files }.to raise_error("Error: Project path is empty :(")
+          expect { subject.filepaths }.to raise_error("Error: Project path is empty :(")
         end
       end
 
@@ -41,7 +41,7 @@ describe Swoop::Project do
         let(:project_path) { 'spec/fixture/Swoop/Swoop__.xcodeproj' }
 
         it 'should raise can\'t find project message' do
-          expect { subject.files }.to raise_error("Error: Can't find .xcodeproj project :(")
+          expect { subject.filepaths }.to raise_error("Error: Can't find .xcodeproj project :(")
         end
       end
 
@@ -49,7 +49,7 @@ describe Swoop::Project do
         let(:project_path) { 'spec/fixture/Swoop/Swoop/main.m' }
 
         it 'should raise invalid project message' do
-          expect { subject.files }.to raise_error("Error: Invalid .xcodeproj file :(")
+          expect { subject.filepaths }.to raise_error("Error: Invalid .xcodeproj file :(")
         end
       end
 
@@ -57,7 +57,7 @@ describe Swoop::Project do
         let(:directory) { 'classes' }
 
         it 'should raise files not found' do
-          expect { subject.files }.to raise_error("Error: Can't find directory :(")
+          expect { subject.filepaths }.to raise_error("Error: Can't find directory :(")
         end
       end
     end
@@ -74,7 +74,7 @@ describe Swoop::Project do
           'Tester.swift'
         ]
 
-        files = subject.files.map { |e| File.basename e }
+        files = subject.filepaths.map { |e| File.basename e }
         expect(files).to eq(fixture_files)
       end
     end

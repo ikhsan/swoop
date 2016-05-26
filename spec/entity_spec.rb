@@ -45,6 +45,7 @@ describe Swoop::Entity do
   end
 
   context "Objective-C" do
+    # TODO: how to get information out of objective-c classes
   end
 
 end
