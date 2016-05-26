@@ -35,8 +35,7 @@ module Swoop
       entities = project.filepaths.map { |path| create_entities(path) }.flatten
       report = Report.new(entities)
 
-      puts report
-
+      puts entities
     end
 
     # def summarise_report(project_path, folder)

@@ -31,6 +31,18 @@ module Swoop
       language == "objc"
     end
 
+    def class?
+      type == "class"
+    end
+
+    def struct?
+      type == "struct"
+    end
+
+    def extension?
+      type == "extension" || type == "category"
+    end
+
     def to_s
       "#{language} - #{name} : #{type}"
     end
