@@ -1,0 +1,34 @@
+{
+  "key.kind" : "source.lang.swift.decl.class",
+  "key.offset" : 209,
+  "key.nameoffset" : 215,
+  "key.namelength" : 4,
+  "key.bodyoffset" : 221,
+  "key.bodylength" : 64,
+  "key.accessibility" : "source.lang.swift.accessibility.internal",
+  "key.substructure" : [
+    {
+      "key.kind" : "source.lang.swift.decl.var.instance",
+      "key.offset" : 226,
+      "key.nameoffset" : 230,
+      "key.namelength" : 9,
+      "key.length" : 27,
+      "key.accessibility" : "source.lang.swift.accessibility.internal",
+      "key.typename" : "String",
+      "key.name" : "firstName"
+    },
+    {
+      "key.kind" : "source.lang.swift.decl.var.instance",
+      "key.offset" : 258,
+      "key.nameoffset" : 262,
+      "key.namelength" : 8,
+      "key.length" : 26,
+      "key.accessibility" : "source.lang.swift.accessibility.internal",
+      "key.typename" : "String",
+      "key.name" : "lastName"
+    }
+  ],
+  "key.name" : "User",
+  "key.runtime_name" : "_TtC8__main__4User",
+  "key.length" : 77
+}

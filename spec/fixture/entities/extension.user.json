@@ -1,0 +1,24 @@
+{
+  "key.kind" : "source.lang.swift.decl.extension",
+  "key.offset" : 312,
+  "key.nameoffset" : 322,
+  "key.namelength" : 4,
+  "key.bodyoffset" : 328,
+  "key.bodylength" : 77,
+  "key.length" : 94,
+  "key.substructure" : [
+    {
+      "key.kind" : "source.lang.swift.decl.var.instance",
+      "key.offset" : 333,
+      "key.nameoffset" : 337,
+      "key.namelength" : 8,
+      "key.bodyoffset" : 356,
+      "key.bodylength" : 47,
+      "key.accessibility" : "source.lang.swift.accessibility.internal",
+      "key.length" : 21,
+      "key.typename" : "String",
+      "key.name" : "fullName"
+    }
+  ],
+  "key.name" : "User"
+}
