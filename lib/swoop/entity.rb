@@ -7,24 +7,28 @@ module Swoop
   class Entity
     attr_reader :name, :language, :type
 
-    def initialize(json)
-      @json = json
+    def initialize(name, language, type)
+      @name = name
+      @language = language
+      @type = type
     end
 
-    def name
-      @name ||= @json['key.name']
-    end
+    def self.new_from_json(json)
+      name = json['key.name']
 
-    def language
-      @language ||= kind.split('.')[2]
-    end
+      kind = json['key.kind']
+      language = kind.split('.')[2]
+      type = kind.split('.').last
 
-    def type
-      @type ||= kind.split('.').last
+      self.new(name, language, type)
     end
 
     def swift?
       language == "swift"
+    end
+
+    def objc?
+      language == "objc"
     end
 
     def to_s
@@ -33,12 +37,6 @@ module Swoop
 
     def ==(other)
       name == other.name && language == other.language && type == other.type
-    end
-
-    private
-
-    def kind
-      @kind ||= @json['key.kind']
     end
   end
 

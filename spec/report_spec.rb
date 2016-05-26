@@ -1,11 +1,15 @@
 require 'spec_helper'
 
 describe Swoop::Report do
-  subject { Swoop::Report.new(json) }
-  let(:json) { [] }
+  subject { described_class.new(entities) }
 
-  context "" do
+  context "Given JSON" do
+    let(:entities) {[
+      double(Swoop::Entity, { 'name' => 'Position', 'language' => 'swift', 'type' => 'struct' })
+    ]}
 
+    # it "" do
+    # end
   end
 
 end

@@ -7,10 +7,7 @@ describe Swoop::SourceKitten do
     context "files with multiple classes" do
       let(:path) { 'spec/fixture/Swoop/Swoop/User.swift' }
 
-      it "should extracting all entities" do
-        puts "£" * 100
-        puts subject
-        
+      it "should extracting all entities" do        
         expect(subject.count).to eq(4)
       end
     end

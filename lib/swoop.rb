@@ -25,14 +25,18 @@ module Swoop
       project_path = options[:path]
       folder = options[:folder]
 
-      summarise_report2 project_path, folder
+      summarise_report project_path, folder
     end
 
     private
 
-    def summarise_report2(project_path, folder)
-      report = create_report(project_path, folder)
+    def summarise_report(project_path, dir_path)
+      project = Project.new(project_path, dir_path)
+      entities = project.filepaths.map { |path| create_entities(path) }.flatten
+      report = Report.new(entities)
+
       puts report
+
     end
 
     # def summarise_report(project_path, folder)
@@ -66,26 +70,27 @@ module Swoop
     #   return 1
     # end
 
-    def collate_entities(entities)
-      swift = entities.select(&:swift?)
-      puts swift
+
+    private
+
+    def create_entities(path)
+      extension = File.extname(path)
+      return create_swift_entities(path) if extension == ".swift"
+      return create_objc_entities(path) if extension == ".h"
+      []
     end
 
-    def create_report(project_path, folder_to_report)
-      project = Project.new(project_path, folder_to_report)
+    def create_swift_entities(path)
+      json_objects = SourceKitten.run(path)
+      json_objects.map { |json| Entity.new_from_json(json) }
+    end
 
-      files = project.files
+    def create_objc_entities(path)
+      filename = File.basename(path)
+      type = filename.include?("+") ? "category" : "class"
+      entity = Entity.new(filename, "objc", type)
 
-      report = files.reduce({ :objc => 0, :swift => 0 }) { |memo, f|
-        collate_entities(SourceKitten.run f) if File.extname(f) == ".swift"
-
-        memo[:swift] += 1 if File.extname(f) == ".swift"
-        memo[:objc] += 1 if File.extname(f) == ".m"
-        memo
-      }
-
-      r = Report.new(report)
-      r
+      [ entity ]
     end
 
   end

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Swoop::Entity do
 
   context "Swift" do
-    subject { Swoop::Entity.new(fixture) }
+    subject { described_class.new_from_json(fixture) }
     let(:content) { File.open(path, 'rb') { |f| f.read } }
     let(:fixture) { JSON.parse(content) }
 
