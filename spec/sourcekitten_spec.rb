@@ -8,6 +8,9 @@ describe Swoop::SourceKitten do
       let(:path) { 'spec/fixture/Swoop/Swoop/User.swift' }
 
       it "should extracting all entities" do
+        puts "£" * 100
+        puts subject
+        
         expect(subject.count).to eq(4)
       end
     end
