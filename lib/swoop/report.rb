@@ -4,13 +4,6 @@ module Swoop
 
     def initialize(entities)
       @entities = entities
-
-      # @objc = hash[:objc]
-      # @swift = hash[:swift]
-      #
-      # @total =  @objc + @swift
-      # @objc_p = @objc * 100.0 / @total
-      # @swift_p = @swift * 100.0 / @total
     end
 
     # Classes
@@ -27,10 +20,12 @@ module Swoop
     end
 
     def swift_classes_percentage
+      return 0 if classes_count == 0
       (swift_classes_count.to_f / classes_count) * 100
     end
 
     def objc_classes_percentage
+      return 0 if classes_count == 0
       (objc_classes_count.to_f / classes_count) * 100
     end
 
@@ -49,10 +44,12 @@ module Swoop
     end
 
     def swift_structs_percentage
+      return 0 if structs_count == 0
       (swift_structs_count.to_f / structs_count) * 100
     end
 
     def objc_structs_percentage
+      return 0 if structs_count == 0
       (objc_structs_count.to_f / structs_count) * 100
     end
 
@@ -71,10 +68,12 @@ module Swoop
     end
 
     def swift_extensions_percentage
+      return 0 if extensions_count == 0
       (swift_extensions_count.to_f / extensions_count) * 100
     end
 
     def objc_extensions_percentage
+      return 0 if extensions_count == 0
       (objc_extensions_count.to_f / extensions_count) * 100
     end
 

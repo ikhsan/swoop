@@ -1,9 +1,5 @@
 module Swoop
 
-  # name : String
-  # type : protocol, extension/category, class, struct
-  # lang : swift, objc
-
   class Entity
     attr_reader :name, :language, :type
 

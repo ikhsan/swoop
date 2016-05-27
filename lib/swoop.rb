@@ -1,6 +1,8 @@
 require "swoop/version"
-require "swoop/report"
 require "swoop/project"
+require "swoop/entity"
+require "swoop/entity_parser"
+require "swoop/report"
 require "swoop/helper"
 require "swoop/sourcekitten"
 
@@ -32,7 +34,8 @@ module Swoop
 
     def create_report(project_path, dir_path)
       project = Project.new(project_path, dir_path)
-      entities = project.filepaths.map { |path| create_entities(path) }.flatten
+      filepaths = project.filepaths
+      entities = filepaths.map { |p| EntityParser.new(p).entities }.flatten
       report = Report.new(entities)
 
       puts report
@@ -70,27 +73,27 @@ module Swoop
     # end
 
 
-    private
-
-    def create_entities(path)
-      extension = File.extname(path)
-      return create_swift_entities(path) if extension == ".swift"
-      return create_objc_entities(path) if extension == ".h"
-      []
-    end
-
-    def create_swift_entities(path)
-      json_objects = SourceKitten.run(path)
-      json_objects.map { |json| Entity.new_from_json(json) }
-    end
-
-    def create_objc_entities(path)
-      filename = File.basename(path)
-      type = filename.include?("+") ? "category" : "class"
-      entity = Entity.new(filename, "objc", type)
-
-      [ entity ]
-    end
+    # private
+    #
+    # def create_entities(path)
+    #   extension = File.extname(path)
+    #   return create_swift_entities(path) if extension == ".swift"
+    #   return create_objc_entities(path) if extension == ".h"
+    #   []
+    # end
+    #
+    # def create_swift_entities(path)
+    #   json_objects = SourceKitten.run(path)
+    #   json_objects.map { |json| Entity.new_from_json(json) }
+    # end
+    #
+    # def create_objc_entities(path)
+    #   filename = File.basename(path)
+    #   type = filename.include?("+") ? "category" : "class"
+    #   entity = Entity.new(filename, "objc", type)
+    #
+    #   [ entity ]
+    # end
 
   end
 

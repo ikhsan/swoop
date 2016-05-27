@@ -22,6 +22,37 @@ describe Swoop::Report do
   ]}
 
   context "Stats" do
+    context "for empty stats" do
+      before do
+        allow(subject).to receive(:classes_count).and_return(0)
+        allow(subject).to receive(:swift_classes_count).and_return(0)
+        allow(subject).to receive(:objc_classes_count).and_return(0)
+
+        allow(subject).to receive(:structs_count).and_return(0)
+        allow(subject).to receive(:swift_structs_count).and_return(0)
+        allow(subject).to receive(:objc_structs_count).and_return(0)
+
+        allow(subject).to receive(:extensions_count).and_return(0)
+        allow(subject).to receive(:swift_extensions_count).and_return(0)
+        allow(subject).to receive(:objc_extensions_count).and_return(0)
+      end
+
+      it "should return zero as its class percentage" do
+        expect(subject.swift_classes_percentage).to eq(0)
+        expect(subject.objc_classes_percentage).to eq(0)
+      end
+
+      it "should return zero as its structs percentage" do
+        expect(subject.swift_structs_percentage).to eq(0)
+        expect(subject.objc_structs_percentage).to eq(0)
+      end
+
+      it "should return zero as its extensions percentage" do
+        expect(subject.swift_extensions_percentage).to eq(0)
+        expect(subject.objc_extensions_percentage).to eq(0)
+      end
+    end
+
     context "for classes" do
       it "should have correct total of classes" do
         expect(subject.classes_count).to eq(6)
