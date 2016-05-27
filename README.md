@@ -1,8 +1,6 @@
 # Swoop
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/swoop`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Swift to Objective-C conversion reporter. Track your swift code in your Xcode codebase. It can go back in time from your git repository and make a comparison report.
 
 ## Installation
 
@@ -22,7 +20,10 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```bash
+$ bundle exec bin/swoop report --path /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj --folder 'Classes/Models'
+$ bundle exec bin/swoop report --path spec/fixture/Swoop/Swoop.xcodeproj --folder 'Swoop/Model'
+```
 
 ## Development
 
@@ -30,12 +31,19 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
+## TODO
+
+* parse objective-c code
+* move git stuff to a `TimeMachine` object
+* graph/html/js representation of the report
+* sourcekitten as submodule
+* progress bar
+
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/swoop.
+Bug reports and pull requests are welcome on GitHub at https://github.com/songkick/swoop.
 
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-

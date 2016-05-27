@@ -27,18 +27,50 @@ module Swoop
       project_path = options[:path]
       folder = options[:folder]
 
-      create_report(project_path, folder)
+      summarise_report(project_path, folder)
     end
 
     private
 
     def create_report(project_path, dir_path)
       project = Project.new(project_path, dir_path)
-      filepaths = project.filepaths
-      entities = filepaths.map { |p| EntityParser.new(p).entities }.flatten
+      entities = project.filepaths.map { |p| EntityParser.new(p).entities }.flatten
       report = Report.new(entities)
+      report
+    end
 
-      puts report
+    def summarise_report(project_path, dir_path)
+      working_dir = get_git_root(project_path)
+      g = Git.open(working_dir)
+
+      tags = g.tags
+        .sort { |a, b| a.log.first.date <=> b.log.first.date }
+        .select { |e| e.name.match('^v\d+.\d+') }
+        .last(15)
+
+      summary = tags.map { |t|
+        log = t.log.first
+
+        g.checkout(log.sha)
+
+        name = t.name
+        date = log.date.strftime("%d-%m-%Y")
+        report = create_report(project_path, dir_path)
+
+        { :name => name, :date => date, :report => report }
+      }
+
+      g.branches[:master].checkout
+
+      puts "\nSwift Swoop Report  : '#{dir_path}'"
+
+      summary.each { |s|
+        puts "#{s[:name]} - #{s[:date]}\n"
+        puts "==="
+        puts s[:report]
+        puts "\n\n"
+      }
+
     end
 
     # def summarise_report(project_path, folder)
@@ -70,29 +102,6 @@ module Swoop
     #   puts "\n"
     #
     #   return 1
-    # end
-
-
-    # private
-    #
-    # def create_entities(path)
-    #   extension = File.extname(path)
-    #   return create_swift_entities(path) if extension == ".swift"
-    #   return create_objc_entities(path) if extension == ".h"
-    #   []
-    # end
-    #
-    # def create_swift_entities(path)
-    #   json_objects = SourceKitten.run(path)
-    #   json_objects.map { |json| Entity.new_from_json(json) }
-    # end
-    #
-    # def create_objc_entities(path)
-    #   filename = File.basename(path)
-    #   type = filename.include?("+") ? "category" : "class"
-    #   entity = Entity.new(filename, "objc", type)
-    #
-    #   [ entity ]
     # end
 
   end
