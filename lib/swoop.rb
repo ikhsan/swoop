@@ -25,17 +25,17 @@ module Swoop
       project_path = options[:path]
       folder = options[:folder]
 
-      summarise_report project_path, folder
+      create_report(project_path, folder)
     end
 
     private
 
-    def summarise_report(project_path, dir_path)
+    def create_report(project_path, dir_path)
       project = Project.new(project_path, dir_path)
       entities = project.filepaths.map { |path| create_entities(path) }.flatten
       report = Report.new(entities)
 
-      puts entities
+      puts report
     end
 
     # def summarise_report(project_path, folder)

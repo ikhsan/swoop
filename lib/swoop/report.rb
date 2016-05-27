@@ -13,24 +13,94 @@ module Swoop
       # @swift_p = @swift * 100.0 / @total
     end
 
+    # Classes
+    def classes_count
+      classes.count
+    end
+
     def swift_classes_count
       swift_classes.count
+    end
+
+    def objc_classes_count
+      objc_classes.count
+    end
+
+    def swift_classes_percentage
+      (swift_classes_count.to_f / classes_count) * 100
+    end
+
+    def objc_classes_percentage
+      (objc_classes_count.to_f / classes_count) * 100
+    end
+
+    # Structs
+
+    def structs_count
+      structs.count
     end
 
     def swift_structs_count
       swift_structs.count
     end
 
-    def objc_classes_count
-      0
+    def objc_structs_count
+      objc_structs.count
+    end
+
+    def swift_structs_percentage
+      (swift_structs_count.to_f / structs_count) * 100
+    end
+
+    def objc_structs_percentage
+      (objc_structs_count.to_f / structs_count) * 100
+    end
+
+    # Extensions
+
+    def extensions_count
+      extensions.count
+    end
+
+    def swift_extensions_count
+      swift_extensions.count
+    end
+
+    def objc_extensions_count
+      objc_extensions.count
+    end
+
+    def swift_extensions_percentage
+      (swift_extensions_count.to_f / extensions_count) * 100
+    end
+
+    def objc_extensions_percentage
+      (objc_extensions_count.to_f / extensions_count) * 100
     end
 
     def to_s
-      "hello!"
-      # "objc : #{objc} (#{'%.02f' % objc_p}%) swift : #{swift} (#{'%.02f' % swift_p}%) total : #{total}"
+      "Class | swift : #{swift_classes_count} (#{'%.02f' % swift_classes_percentage}%) , objc : #{objc_classes_count} (#{'%.02f' % objc_classes_percentage}%), total: #{classes_count} \n" +
+      "Structs | swift : #{swift_structs_count} (#{'%.02f' % swift_structs_percentage}%) , objc : #{objc_structs_count} (#{'%.02f' % objc_structs_percentage}%), total: #{structs_count} \n" +
+      "Extensions | swift : #{swift_extensions_count} (#{'%.02f' % swift_extensions_percentage}%) , objc : #{objc_extensions_count} (#{'%.02f' % objc_extensions_percentage}%), total: #{extensions_count}"
     end
 
     private
+
+    def classes
+      @classes ||= @entities.select(&:class?)
+    end
+
+    def structs
+      @structs ||= @entities.select(&:struct?)
+    end
+
+    def extensions
+      @extensions ||= @entities.select(&:extension?)
+    end
+
+    def swift_entities
+      @swift_entities ||= @entities.select(&:swift?)
+    end
 
     def swift_classes
       @swift_classes ||= swift_entities.select(&:class?)
@@ -40,14 +110,24 @@ module Swoop
       @swift_structs ||= swift_entities.select(&:struct?)
     end
 
-    def swift_entities
-      @swift_entities ||= @entities.select(&:swift?)
+    def swift_extensions
+      @swift_extensions ||= swift_entities.select(&:extension?)
     end
 
     def objc_entities
       @objc_entities ||= @entities.select(&:objc?)
     end
 
-  end
+    def objc_classes
+      @objc_classes ||= objc_entities.select(&:class?)
+    end
 
+    def objc_structs
+      @objc_structs ||= objc_entities.select(&:struct?)
+    end
+
+    def objc_extensions
+      @objc_extensions ||= objc_entities.select(&:extension?)
+    end
+  end
 end

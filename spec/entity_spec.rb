@@ -58,8 +58,10 @@ describe Swoop::Entity do
 
   context "Swift" do
     subject { described_class.new_from_json(fixture) }
-    let(:content) { File.open(path, 'rb') { |f| f.read } }
-    let(:fixture) { JSON.parse(content) }
+    let(:fixture) {
+      content = File.open(path, 'rb') { |f| f.read }
+      return JSON.parse(content)
+    }
 
     context "when file has a struct" do
       let(:path) { 'spec/fixture/entities/struct.position.json' }
