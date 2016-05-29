@@ -11,14 +11,16 @@ module Swoop
     end
 
     def travel
+      # TODO: get current branch
+      current_branch = :master
+
       logs.each do |t|
         log = t.log.first
         git.checkout(log.sha)
         yield(t.name, log.date)
       end
 
-      # Checkout default branch (assuming master is the default)
-      git.branches[:master].checkout
+      git.branches[current_branch].checkout
     end
 
     private
@@ -39,6 +41,7 @@ module Swoop
       if @tags > 0
         git.tags.select { |e| e.name.match('^v\d+.\d+') }.sort { |a, b| a.log.first.date <=> b.log.first.date }.last(@tags)
       elsif @weeks > 0
+        # TODO: get logs for last n weeks
         nil
       end
     end

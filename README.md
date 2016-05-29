@@ -28,23 +28,25 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 $ bundle exec swoop report --path <path> --folder 'Classes/Models'
 ```
 
-## TODO
+## TODOs
 
 - [x] renderer
   - [x] csv
-  - [] graph/html/js representation of the report
-- [] Time machine
-  - [] get latest n weeks
-  - [] get current branch
-- [] sourcekitten
-  - [] use as submodule
-  - [] parse objective-c code
-- [] progress bar
+  - [ ] graph/html/js representation of the report
+- [ ] Time machine
+  - [ ] get latest n weeks
+  - [ ] get current branch
+- [ ] sourcekitten
+  - [ ] use as submodule
+  - [ ] parse objective-c code
+- [ ] Tests
+  - [ ] renderers
+  - [ ] time machine
+- [ ] progress bar
 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/ikhsan/swoop.
-
 
 ## License
 
