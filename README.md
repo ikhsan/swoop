@@ -30,14 +30,16 @@ $ bundle exec swoop report --path <path> --folder 'Classes/Models'
 
 ## TODO
 
-[x] renderer
-  [x] csv
-  [] graph/html/js representation of the report
-[] parse objective-c code
-[] get latest n weeks
-[] get current branch
-[] sourcekitten as submodule
-[] progress bar
+- [x] renderer
+  - [x] csv
+  - [] graph/html/js representation of the report
+- [] Time machine
+  - [] get latest n weeks
+  - [] get current branch
+- [] sourcekitten
+  - [] use as submodule
+  - [] parse objective-c code
+- [] progress bar
 
 ## Contributing
 
