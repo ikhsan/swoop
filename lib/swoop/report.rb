@@ -2,8 +2,22 @@ module Swoop
 
   class Report
 
-    def initialize(entities)
+    attr_reader :name
+
+    def initialize(entities, name = '', date = Time.now)
       @entities = entities
+
+      @date = date
+
+      if name.nil? || name == ''
+        @name = date.strftime("%d-%m-%Y")
+      else
+        @name = name
+      end
+    end
+
+    def date
+      @date.strftime("%d-%m-%Y")
     end
 
     # Classes
@@ -82,6 +96,11 @@ module Swoop
       "Structs | swift : #{swift_structs_count} (#{'%.02f' % swift_structs_percentage}%) , objc : #{objc_structs_count} (#{'%.02f' % objc_structs_percentage}%), total: #{structs_count} \n" +
       "Extensions | swift : #{swift_extensions_count} (#{'%.02f' % swift_extensions_percentage}%) , objc : #{objc_extensions_count} (#{'%.02f' % objc_extensions_percentage}%), total: #{extensions_count}"
     end
+
+    # def to_csv
+    # "name,date,swift class,swift class %,objc class,objc class %,total class,swift struct,swift struct %,objc struct,objc struct %,total struct,swift extension,swift extension %,objc extension,objc extension %,total extension\n"
+    #   "#{name},#{date},#{swift_classes_count},#{'%.02f' % swift_classes_percentage},#{objc_classes_count},#{'%.02f' % objc_classes_percentage},#{classes_count},#{swift_structs_count},#{'%.02f' % swift_structs_percentage},#{objc_structs_count},#{'%.02f' % objc_structs_percentage},#{structs_count},#{swift_extensions_count},#{'%.02f' % swift_extensions_percentage},#{objc_extensions_count},#{'%.02f' % objc_extensions_percentage},#{extensions_count}"
+    # end
 
     private
 

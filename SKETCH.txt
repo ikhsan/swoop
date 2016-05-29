@@ -8,15 +8,16 @@ Swift objective-C comparison report (swoop)
     [x] raise exception when xcodeproj is missing or nil
   [x] add real xcode project as a fixture
   [x] use path like `classes/models`
-- analyse all files (sourcekitten)
-  - count protocol, classes, struct and categories for each languages
-  - process data, called it as a 'report snapshot'
-- collate through time (git)
-  - get current branch
-  - collect commit's hashes for checkpoints
-    - get latest n tags
-    - get latest n weeks
-  - store report as a file for easier reading
-- presenting
-  - default to terminal only (show as table?)
-  - create self-contained html report for interactivity
+[] analyse all files (sourcekitten)
+  [x] count protocol, classes, struct and categories for each languages
+  [x] process data, called it as a 'report snapshot'
+  [] objective-c ???
+[] collate through time (git)
+  [] get current branch
+  [] collect commit's hashes for checkpoints
+    [x] get latest n tags
+    [] get latest n weeks
+[] renderer
+  [] default to terminal only (show as table?)
+  [] create self-contained html report for interactivity
+  [] csv
