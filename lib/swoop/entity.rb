@@ -12,9 +12,10 @@ module Swoop
     def self.new_from_json(json)
       name = json['key.name']
 
-      kind = json['key.kind']
-      language = kind.split('.')[2]
-      type = kind.split('.').last
+      kind = json['key.kind'].split('.')
+      kind.shift if kind.first == 'sourcekitten'
+      language = kind[2]
+      type = kind.last
 
       self.new(name, language, type)
     end

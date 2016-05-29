@@ -28,7 +28,7 @@ module Swoop
       # filename = options[:filename]
 
       reports = summarise_report(project_path, dir_path)
-      renderer = csv_renderer(reports, "Swift Swoop Report : '#{dir_path}'", "model")
+      renderer = csv_renderer(reports, "Swift Swoop Report : '#{dir_path}'", 'model')
       renderer.render
     end
 
