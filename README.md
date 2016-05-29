@@ -25,21 +25,23 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ```bash
-$ bundle exec swoop report --path /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj --folder 'Classes/Models'
-$ bundle exec swoop report --path spec/fixture/Swoop/Swoop.xcodeproj --folder 'Swoop/Model'
+$ bundle exec swoop report --path <path> --folder 'Classes/Models'
 ```
 
 ## TODO
 
-* parse objective-c code
-* move git stuff to a `TimeMachine` object
-* graph/html/js representation of the report
-* sourcekitten as submodule
-* progress bar
+[x] renderer
+  [x] csv
+  [] graph/html/js representation of the report
+[] parse objective-c code
+[] get latest n weeks
+[] get current branch
+[] sourcekitten as submodule
+[] progress bar
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/songkick/swoop.
+Bug reports and pull requests are welcome on GitHub at https://github.com/ikhsan/swoop.
 
 
 ## License

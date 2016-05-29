@@ -6,6 +6,9 @@ require "swoop/report"
 require "swoop/sourcekitten"
 require "swoop/time_machine"
 
+require "swoop/renderer/renderer"
+require "swoop/renderer/csv_renderer"
+
 require "thor"
 
 module Swoop
@@ -20,31 +23,41 @@ module Swoop
     option :folder
     def report
       project_path = options[:path]
-      folder = options[:folder]
+      dir_path = options[:folder]
+      # render_to = options[:render_to]
+      # filename = options[:filename]
 
-      summarise_report(project_path, folder)
+      reports = summarise_report(project_path, dir_path)
+      renderer = csv_renderer(reports, "Swift Swoop Report : '#{dir_path}'", "model")
+      renderer.render
     end
 
     default_task :report
 
     private
 
-    def create_report(project_path, dir_path, name, date)
+    def summarise_report(project_path, dir_path)
       project = Project.new(project_path, dir_path)
-      entities = project.filepaths.map { |p| EntityParser.new(p).entities }.flatten
-      return Report.new(entities, name, date)
+      delorean = TimeMachine.new(project_path, { :tags => 15 })
+
+      reports = []
+      delorean.travel do |name, date|
+        entities = get_entities(project.filepaths)
+        reports << Report.new(entities, name, date)
+      end
+
+      entities = get_entities(project.filepaths)
+      reports << Report.new(entities, 'master')
+
+      reports
     end
 
-    def summarise_report(project_path, dir_path)
-      reports = []
+    def get_entities(filepaths)
+      filepaths.map { |p| EntityParser.new(p).entities }.flatten
+    end
 
-      delorean = TimeMachine.new(project_path, { :tags => 15 })
-      delorean.travel { |name, date| reports << create_report(project_path, dir_path, name, date) }
-
-      # renderer = TableRenderer.new(summary)
-      # renderer.render
-      puts "\nSwift Swoop Report  : '#{dir_path}'"
-      puts reports
+    def csv_renderer(reports, title, filename = nil)
+      CSVRenderer.new(reports, title, filename)
     end
   end
 
