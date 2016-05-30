@@ -32,6 +32,7 @@ $ bundle exec swoop report --path <path> --folder 'Classes/Models'
 
 - [x] renderer
   - [x] csv
+  - [x] table
   - [ ] graph/html/js representation of the report
 - [ ] Time machine
   - [ ] get latest n weeks
@@ -39,10 +40,8 @@ $ bundle exec swoop report --path <path> --folder 'Classes/Models'
 - [ ] sourcekitten
   - [ ] use as submodule
   - [ ] parse objective-c code
-- [ ] Tests
-  - [ ] renderers
-  - [ ] time machine
 - [ ] progress bar
+- [ ] tests and code coverage
 
 ## Contributing
 

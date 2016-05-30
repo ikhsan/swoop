@@ -2,7 +2,6 @@ require 'json'
 require 'pathname'
 require 'shellwords'
 require 'swoop/entity'
-require "pry"
 
 module Swoop
   class SourceKitten
@@ -23,7 +22,7 @@ module Swoop
     end
 
     def self.parse_swift(file_path)
-      output = `#{Shellwords.escape(bin_path)} doc --single-file #{file_path} -- -j4 #{file_path}`
+      output = `#{Shellwords.escape(bin_path)} doc --single-file '#{file_path}' -- -j4 '#{file_path}'`
 
       # puts output
 
@@ -34,21 +33,13 @@ module Swoop
     end
 
     def self.parse_objc(file_path)
-      output = `#{Shellwords.escape(bin_path)} doc --objc #{file_path} -- -x objective-c -isysroot $(xcrun --show-sdk-path) -I $(pwd)`
-
-      # puts output
+      output = `#{Shellwords.escape(bin_path)} doc --objc '#{file_path}' -- -x objective-c -isysroot $(xcrun --show-sdk-path) -I $(pwd)`
 
       json_output = JSON.parse(output)
+      return [] if json_output.nil? || json_output.empty?
       substructures = json_output.first.values.first['key.substructure']
       return [] if substructures.nil? || substructures.empty?
       substructures
-
-      # filename = File.basename(file_path)
-      # type = filename.include?("+") ? "category" : "class"
-      # entity = Entity.new(filename, "objc", type)
-      #
-      # [ entity ]
-      # []
     end
 
     def self.bin_path

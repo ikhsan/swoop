@@ -8,6 +8,7 @@ require "swoop/time_machine"
 
 require "swoop/renderer/renderer"
 require "swoop/renderer/csv_renderer"
+require "swoop/renderer/table_renderer"
 
 require "thor"
 
@@ -28,7 +29,9 @@ module Swoop
       # filename = options[:filename]
 
       reports = summarise_report(project_path, dir_path)
-      renderer = csv_renderer(reports, "Swift Swoop Report : '#{dir_path}'", 'model')
+      title = "Swift Swoop Report : '#{dir_path}'"
+      # renderer = csv_renderer(reports, title, 'model')
+      renderer = table_renderer(reports, title)
       renderer.render
     end
 
@@ -47,13 +50,17 @@ module Swoop
       end
 
       entities = get_entities(project.filepaths)
-      reports << Report.new(entities, 'master')
+      reports << Report.new(entities, 'HEAD')
 
       reports
     end
 
     def get_entities(filepaths)
       filepaths.map { |p| EntityParser.new(p).entities }.flatten
+    end
+
+    def table_renderer(reports, title)
+      TableRenderer.new(reports, title)
     end
 
     def csv_renderer(reports, title, filename = nil)
