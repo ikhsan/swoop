@@ -1,49 +1,64 @@
-require 'json'
 require 'pathname'
 require 'shellwords'
 require 'swoop/entity'
 
 module Swoop
-  class SourceKitten
+  module SourceKitten
+
+    @file_path = ""
+
     def self.run(file_path)
-      return parse_swift(file_path) if path_to_swift?(file_path)
-      return parse_objc(file_path) if path_to_objc?(file_path)
-      []
+      @file_path = file_path
+      return run_swift if File.extname(@file_path) == ".swift"
+      return run_objc if File.extname(@file_path) == ".h"
+      ""
     end
 
     private
 
-    def self.path_to_swift?(path)
-      File.extname(path) == ".swift"
+    def self.file_path
+      @file_path.to_s
     end
 
-    def self.path_to_objc?(path)
-      File.extname(path) == ".h"
+    def self.swift_commands
+      [bin_path, "doc", "--single-file", file_path, "--", "-j4", file_path]
     end
 
-    def self.parse_swift(file_path)
-      output = `#{Shellwords.escape(bin_path)} doc --single-file '#{file_path}' -- -j4 '#{file_path}'`
-
-      # puts output
-
-      json_output = JSON.parse(output)
-      substructures = json_output.values.first['key.substructure']
-      return [] if substructures.nil? || substructures.empty?
-      substructures
+    def self.run_swift
+      run_command(swift_commands)
     end
 
-    def self.parse_objc(file_path)
-      output = `#{Shellwords.escape(bin_path)} doc --objc '#{file_path}' -- -x objective-c -isysroot $(xcrun --show-sdk-path) -I $(pwd)`
+    def self.objc_commands
+      [bin_path, "doc", "--objc", file_path, "--", "-x", "objective-c", "-isysroot", `xcrun --show-sdk-path --sdk iphonesimulator`.chomp, "-I", `pwd`]
+    end
 
-      json_output = JSON.parse(output)
-      return [] if json_output.nil? || json_output.empty?
-      substructures = json_output.first.values.first['key.substructure']
-      return [] if substructures.nil? || substructures.empty?
-      substructures
+    def self.run_objc
+      run_command(objc_commands)
+    end
+
+    def self.run_command(commands)
+      require 'open3'
+
+      stdin, stdout, stderr, wait_thr = Open3.popen3(*commands)
+      response = stdout.read
+      error = stderr.read
+
+      stdin.close
+      stdout.close
+      stderr.close
+
+      exit_status = wait_thr.value
+      return response if exit_status.success?
+
+      # TODO: handle error properly, why this doesn't work
+      # puts file_path
+
+      nil
     end
 
     def self.bin_path
-      Pathname(__FILE__).parent + 'SourceKitten/bin/sourcekitten'
+      Shellwords.escape(Pathname(__FILE__).parent + 'SourceKitten/bin/sourcekitten')
     end
+
   end
 end

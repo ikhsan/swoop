@@ -39,7 +39,8 @@ $ bundle exec swoop report --path <path> --folder 'Classes/Models'
   - [ ] get current branch
 - [ ] sourcekitten
   - [ ] use as submodule
-  - [ ] parse objective-c code
+  - [ ] parse objective-c code (category doesn't work)
+  - [ ] umbrella header?
 - [ ] progress bar
 - [ ] tests and code coverage
 

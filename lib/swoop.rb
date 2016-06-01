@@ -30,9 +30,7 @@ module Swoop
 
       reports = summarise_report(project_path, dir_path)
       title = "Swift Swoop Report : '#{dir_path}'"
-      # renderer = csv_renderer(reports, title, 'model')
-      renderer = table_renderer(reports, title)
-      renderer.render
+      renderer(reports, title).render
     end
 
     default_task :report
@@ -41,13 +39,13 @@ module Swoop
 
     def summarise_report(project_path, dir_path)
       project = Project.new(project_path, dir_path)
-      delorean = TimeMachine.new(project_path, { :tags => 15 })
+      # delorean = TimeMachine.new(project_path, { :tags => 15 })
 
       reports = []
-      delorean.travel do |name, date|
-        entities = get_entities(project.filepaths)
-        reports << Report.new(entities, name, date)
-      end
+      # delorean.travel do |name, date|
+      #   entities = get_entities(project.filepaths)
+      #   reports << Report.new(entities, name, date)
+      # end
 
       entities = get_entities(project.filepaths)
       reports << Report.new(entities, 'HEAD')
@@ -59,12 +57,9 @@ module Swoop
       filepaths.map { |p| EntityParser.new(p).entities }.flatten
     end
 
-    def table_renderer(reports, title)
+    def renderer(reports, title, filename = nil)
+      # CSVRenderer.new(reports, title, filename)
       TableRenderer.new(reports, title)
-    end
-
-    def csv_renderer(reports, title, filename = nil)
-      CSVRenderer.new(reports, title, filename)
     end
   end
 
