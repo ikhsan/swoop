@@ -4,10 +4,16 @@ module Swoop
 
   class TimeMachine
 
-    def initialize(project_path, options)
-      @project_path = project_path
+    attr_reader :project
+
+    def initialize(project, options)
+      @project = project
       @tags = options[:tags] || 10
       @weeks = options[:weeks] || 20
+    end
+
+    def project_path
+      @project_path ||= @project.path
     end
 
     def travel
@@ -17,7 +23,7 @@ module Swoop
       logs.each do |t|
         log = t.log.first
         git.checkout(log.sha)
-        yield(t.name, log.date)
+        yield(project, t.name, log.date)
       end
 
       git.branches[current_branch].checkout
@@ -27,7 +33,7 @@ module Swoop
 
     def get_git_root
       current_dir = `pwd`
-      project_dir = File.dirname(@project_path)
+      project_dir = File.dirname(project_path)
 
       path = `cd #{project_dir};git rev-parse --show-toplevel;cd #{current_dir}`
       path.strip

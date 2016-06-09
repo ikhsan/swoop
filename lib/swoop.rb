@@ -26,7 +26,7 @@ module Swoop
       project_path = options[:path]
       dir_path = options[:folder]
       # render_to = options[:render_to]
-      # filename = options[:filename]
+      # csv = options[:csv]
 
       reports = summarise_report(project_path, dir_path)
       title = "Swift Swoop Report : '#{dir_path}'"
@@ -39,13 +39,13 @@ module Swoop
 
     def summarise_report(project_path, dir_path)
       project = Project.new(project_path, dir_path)
-      # delorean = TimeMachine.new(project_path, { :tags => 15 })
+      delorean = TimeMachine.new(project, { :tags => 5 })
 
       reports = []
-      # delorean.travel do |name, date|
-      #   entities = get_entities(project.filepaths)
-      #   reports << Report.new(entities, name, date)
-      # end
+      delorean.travel do |proj, name, date|
+        entities = get_entities(proj.filepaths)
+        reports << Report.new(entities, name, date)
+      end
 
       entities = get_entities(project.filepaths)
       reports << Report.new(entities, 'HEAD')
