@@ -40,7 +40,7 @@ module Swoop
 
     def summarise_report(project_path, dir_path)
       project = Project.new(project_path, dir_path)
-      delorean = TimeMachine.new(project, { :tags => 1 })
+      delorean = TimeMachine.new(project, { :tags => 8 })
 
       reports = []
       delorean.travel do |proj, name, date|

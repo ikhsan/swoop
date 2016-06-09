@@ -11,6 +11,20 @@ module Swoop
       @filename = filename
     end
 
+    def class_count_data
+      rows = []
+      rows << ['Date', 'Swift Class', 'Objective-C Class']
+      rows += reports.map { |r| [ "#{r.name}\n(#{r.date})", r.swift_classes_count, r.objc_classes_count]  }
+      rows.to_s
+    end
+
+    def class_percentage_data
+      rows = []
+      rows << ['Date', 'Swift Class (%)', 'Objective-C Class (%)']
+      rows += reports.map { |r| [ "#{r.name}\n(#{r.date})", r.swift_classes_percentage, r.objc_classes_percentage]  }
+      rows.to_s
+    end
+
     def render
       empty_target_dir
       copy_assets
@@ -34,7 +48,6 @@ module Swoop
     end
 
     def copy_assets
-      FileUtils.cp(File.join(source_dir, "Chart.bundle.min.js"), target_dir)
       FileUtils.cp(File.join(source_dir, "styles.css"), target_dir)
     end
 
