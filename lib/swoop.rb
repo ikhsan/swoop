@@ -9,6 +9,7 @@ require "swoop/time_machine"
 require "swoop/renderer/renderer"
 require "swoop/renderer/csv_renderer"
 require "swoop/renderer/table_renderer"
+require "swoop/renderer/chart_renderer"
 
 require "thor"
 
@@ -39,7 +40,7 @@ module Swoop
 
     def summarise_report(project_path, dir_path)
       project = Project.new(project_path, dir_path)
-      delorean = TimeMachine.new(project, { :tags => 5 })
+      delorean = TimeMachine.new(project, { :tags => 1 })
 
       reports = []
       delorean.travel do |proj, name, date|
@@ -59,7 +60,8 @@ module Swoop
 
     def renderer(reports, title, filename = nil)
       # CSVRenderer.new(reports, title, filename)
-      TableRenderer.new(reports, title)
+      # TableRenderer.new(reports, title)
+      ChartRenderer.new(reports, title)
     end
   end
 
