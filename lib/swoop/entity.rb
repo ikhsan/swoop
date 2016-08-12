@@ -9,17 +9,6 @@ module Swoop
       @type = type
     end
 
-    def self.new_from_json(json)
-      name = json['key.name']
-
-      kind = json['key.kind'].split('.')
-      kind.shift if kind.first == 'sourcekitten'
-      language = kind[2]
-      type = kind.last
-
-      self.new(name, language, type)
-    end
-
     def swift?
       language == "swift"
     end

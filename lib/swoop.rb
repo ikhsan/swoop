@@ -3,7 +3,6 @@ require "swoop/project"
 require "swoop/entity"
 require "swoop/entity_parser"
 require "swoop/report"
-require "swoop/sourcekitten"
 require "swoop/time_machine"
 
 require "swoop/renderer/renderer"
@@ -40,11 +39,12 @@ module Swoop
 
     def summarise_report(project_path, dir_path)
       project = Project.new(project_path, dir_path)
-      delorean = TimeMachine.new(project, { :tags => 8 })
+      delorean = TimeMachine.new(project, { :tags => 1 })
 
       reports = []
       delorean.travel do |proj, name, date|
-        entities = get_entities(proj.filepaths)
+        entities = EntityParser.parse_files(proj.filepaths)
+        # entities = get_entities(proj.filepaths)
         reports << Report.new(entities, name, date)
       end
 
@@ -52,10 +52,6 @@ module Swoop
       reports << Report.new(entities, 'HEAD')
 
       reports
-    end
-
-    def get_entities(filepaths)
-      filepaths.map { |p| EntityParser.new(p).entities }.flatten
     end
 
     def renderer(reports, title, filename = nil)

@@ -37,11 +37,6 @@ $ bundle exec swoop report --path <path> --folder 'Classes/Models'
 - [ ] Time machine
   - [ ] get latest n weeks
   - [ ] get current branch
-- [ ] sourcekitten
-  - [ ] use as submodule
-  - [ ] parse objective-c code (category doesn't work)
-  - [ ] umbrella header?
-- [ ] progress bar
 - [ ] tests and code coverage
 
 ## Contributing
