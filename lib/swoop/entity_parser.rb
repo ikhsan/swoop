@@ -18,32 +18,23 @@ module Swoop
       @entitites ||= begin
         return parse_swift if File.extname(@filepath) == ".swift"
         []
-
-        # output = SourceKitten.run(@path)
-        # json_objects = parse(output)
-        # json_objects.map { |json| Entity.new_from_json(json) }.flatten
       end
     end
 
     private
 
     SWIFT_CLASS = /class\s*(\w+)/
+    SWIFT_STRUCT = /struct\s*(\w+)/
+    SWIFT_EXT = /extension\s*(\w+)/
     def parse_swift
       contents = File.read(@filepath)
-      classnames = contents.scan(SWIFT_CLASS).flatten
-      classes = classnames.map { |c| Entity.new(c, 'swift', 'class') }
-      [ *classes ]
-    end
 
-    # def parse_objc(output)
-    #   json_output = JSON.parse(output)
-    #   return [] if json_output.nil? || json_output.empty?
-    #
-    #   substructures = json_output.first.values.first['key.substructure']
-    #   return [] if substructures.nil? || substructures.empty?
-    #
-    #   substructures
-    # end
+      classes = contents.scan(SWIFT_CLASS).flatten.map { |c| Entity.new(c, 'swift', 'class') }
+      structs = contents.scan(SWIFT_STRUCT).flatten.map { |s| Entity.new(s, 'swift', 'struct') }
+      extensions = contents.scan(SWIFT_EXT).flatten.map { |e| Entity.new(e, 'swift', 'extension') }
+
+      [ *classes, *structs, *extensions ]
+    end
 
   end
 
