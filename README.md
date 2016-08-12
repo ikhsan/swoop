@@ -33,11 +33,12 @@ $ bundle exec swoop report --path <path> --folder 'Classes/Models'
 - [x] renderer
   - [x] csv
   - [x] table
-  - [ ] graph/html/js representation of the report
-- [ ] Time machine
-  - [ ] get latest n weeks
+  - [x] graph/html/js representation of the report
+- [x] Time machine
+  - [x] get latest n tags
   - [ ] get current branch
-- [ ] tests and code coverage
+  - [ ] get latest n weeks
+- [ ] tests objc parser
 
 ## Contributing
 
