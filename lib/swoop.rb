@@ -44,7 +44,6 @@ module Swoop
       reports = []
       delorean.travel do |proj, name, date|
         entities = EntityParser.parse_files(proj.filepaths)
-        # entities = get_entities(proj.filepaths)
         reports << Report.new(entities, name, date)
       end
 

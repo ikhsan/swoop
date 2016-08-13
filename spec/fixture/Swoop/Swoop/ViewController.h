@@ -19,3 +19,24 @@
 @interface SpecialViewController : ViewController
 
 @end
+
+@interface SpecialViewController (Extension)
+
+@end
+
+@interface SpecialViewController ()
+
+@end
+
+typedef struct {
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
+} Color;
+
+struct Books 
+{
+   NSString *title;
+   NSString *author;
+   int book_id;
+} book;
