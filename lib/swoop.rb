@@ -15,50 +15,48 @@ require "thor"
 module Swoop
 
   class Reporter < Thor
-    # /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj
-    # bundle exec bin/swoop --path /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj --folder 'Classes/Models'
-    # bundle exec bin/swoop --path spec/fixture/Swoop/Swoop.xcodeproj --folder 'Swoop/Model'
+    # bundle exec bin/swoop --path /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj --dir 'Classes/Models'
 
     desc "report", "Create objc swift comparison report for classes from an Xcode project"
     option :path
-    option :folder
+    option :dir
     def report
-      project_path = options[:path]
-      dir_path = options[:folder]
-      # render_to = options[:render_to]
-      # csv = options[:csv]
+      @project_path = options[:path]
+      @dir_path = options[:dir]
+      # @renderer_type = options[:renderer]
 
-      reports = summarise_report(project_path, dir_path)
-      title = "Swift Swoop Report : '#{dir_path}'"
-      renderer(reports, title).render
+      renderer = renderer_class.new(summary_report, title)
+      renderer.render
     end
 
     default_task :report
 
     private
 
-    def summarise_report(project_path, dir_path)
-      reports = []
+    def summary_report
+      @summary_report ||= begin
+        project = Project.new(@project_path, @dir_path)
+        delorean = TimeMachine.new(project) # { :weeks => 10 }
 
-      project = Project.new(project_path, dir_path)
-      delorean = TimeMachine.new(project, { :tags => 8 })
-      delorean.travel do |proj, name, date|
-        reports << collate_report(proj, name, date)
+        reports = []
+        delorean.travel do |proj, name, date|
+          entities = EntityParser.parse_files(proj.filepaths)
+          reports << Report.new(entities, name, date)
+        end
+        reports
+      rescue ExceptionName
+        nil
       end
-      reports << collate_report(project, 'HEAD', Time.now)
-
-      reports
     end
 
-    def collate_report(proj, name, date)
-      entities = EntityParser.parse_files(proj.filepaths)
-      Report.new(entities, name, date)
+    def title
+      "Swoop Report : '#{@dir_path}'"
     end
 
-    def renderer(reports, title, filename = nil)
-      # CSVRenderer.new(reports, title, filename)
-      TableRenderer.new(reports, title)
-      # ChartRenderer.new(reports, title)
+    def renderer_class
+      # CSVRenderer
+      # ChartRenderer
+      TableRenderer
     end
   end
 

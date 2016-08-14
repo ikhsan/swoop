@@ -6,10 +6,11 @@ module Swoop
 
     attr_reader :project
 
-    def initialize(project, options)
+    def initialize(project, options = {})
       @project = project
       @tags = options[:tags] || 8
-      @weeks = options[:weeks] || 20
+      @weeks = options[:weeks] || 0
+      @filter = '^v\d+.\d+'
     end
 
     def project_path
@@ -26,6 +27,7 @@ module Swoop
       end
 
       git.branches[current_branch].checkout
+      yield(project, current_branch, Time.now)
     end
 
     private
@@ -43,13 +45,33 @@ module Swoop
     end
 
     def logs
-      if @tags > 0
-        git.tags.select { |e| e.name.match('^v\d+.\d+') }.sort { |a, b| a.log.first.date <=> b.log.first.date }.last(@tags)
-      elsif @weeks > 0
-        # TODO: get logs for last n weeks
-        nil
-      end
+      return logs_by_week if @weeks > 0
+      logs_by_tags
     end
+
+    def logs_by_tags
+      git.tags
+        .select { |e| e.name.match(@filter) }
+        .sort { |a, b| a.log.first.date <=> b.log.first.date }
+        .last(@tags)
+    end
+
+    def logs_by_week
+      log = git.log(5000).since("#{@weeks+1} weeks ago")
+
+      logs = []
+      (0..log.size-1).each { |i| logs << log[i] }
+
+      logs
+        .reduce({}) { |memo, l|
+          week = l.date.strftime('%W')
+          memo[week] = l
+          memo
+        }
+        .values
+        .reverse
+    end
+
   end
 
 end
