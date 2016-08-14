@@ -25,7 +25,7 @@ describe Swoop::EntityParser do
     end
   end
 
-  context "Objective-C" do
+  context "Parsing Objective-C file" do
     let(:filepath) { 'spec/fixture/Swoop/Swoop/ViewController.h' }
 
     it "should parse class " do
@@ -45,6 +45,32 @@ describe Swoop::EntityParser do
       ext = double(Swoop::Entity, { 'name' => 'SpecialViewController', 'language' => 'objc', 'type' => 'extension' })
       expect(subject.entities).to include(ext)
     end
+
+    it "should parse structs" do
+      struct1 = double(Swoop::Entity, { 'name' => 'Color', 'language' => 'objc', 'type' => 'struct' })
+      expect(subject.entities).to include(struct1)
+
+      struct2 = double(Swoop::Entity, { 'name' => 'Coordinate', 'language' => 'objc', 'type' => 'struct' })
+      expect(subject.entities).to include(struct2)
+
+      struct3 = double(Swoop::Entity, { 'name' => 'Book', 'language' => 'objc', 'type' => 'struct' })
+      expect(subject.entities).to include(struct3)
+    end
+  end
+
+  context "Parsing multiple files" do
+    let(:filepaths) {[
+      'spec/fixture/Swoop/Swoop/ViewController.h',
+      'spec/fixture/Swoop/Swoop/ViewController.h'
+    ]}
+
+    it "should parse all entities without duplicates" do
+      entities = described_class.parse_files(filepaths)
+      dupes = entities.select { |e| entities.count(e) > 1 }
+
+      expect(dupes).to be_empty
+    end
+
   end
 
 end

@@ -34,9 +34,14 @@ typedef struct {
     unsigned char blue;
 } Color;
 
-struct Books 
+struct Book
 {
    NSString *title;
    NSString *author;
    int book_id;
 } book;
+
+typedef struct {
+    int lat,
+    int long,
+} Coordinate;

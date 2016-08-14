@@ -1,5 +1,4 @@
 module Swoop
-
   class Entity
     attr_reader :name, :language, :type
 
@@ -36,6 +35,10 @@ module Swoop
     def ==(other)
       name == other.name && language == other.language && type == other.type
     end
-  end
+    alias :eql? :==
 
+    def hash
+      [name, language, type].hash
+    end
+  end
 end
