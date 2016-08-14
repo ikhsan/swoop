@@ -17,8 +17,7 @@ module Swoop
     end
 
     def travel
-      # TODO: get current branch
-      current_branch = :master
+      current_branch = git.current_branch
 
       logs.each do |t|
         log = t.log.first
