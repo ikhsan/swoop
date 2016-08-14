@@ -1,6 +1,6 @@
-# Swoop
+# Swoop : Swift to Objective-C conversion reporter
 
-Swift to Objective-C conversion reporter. Track your swift code in your Xcode codebase. It can go back in time from your git repository and make a comparison report.
+Track your swift code in your Xcode codebase through time. It can go back in time from your git repository and make a comparison report.
 
 ## Installation
 
@@ -27,18 +27,6 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ```bash
 $ bundle exec swoop report --path <path> --folder 'Classes/Models'
 ```
-
-## TODOs
-
-- [x] renderer
-  - [x] csv
-  - [x] table
-  - [x] graph/html/js representation of the report
-- [x] Time machine
-  - [x] get latest n tags
-  - [ ] get current branch
-  - [ ] get latest n weeks
-- [ ] tests objc parser
 
 ## Contributing
 

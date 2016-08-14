@@ -38,25 +38,27 @@ module Swoop
     private
 
     def summarise_report(project_path, dir_path)
-      project = Project.new(project_path, dir_path)
-      delorean = TimeMachine.new(project, { :tags => 1 })
-
       reports = []
-      delorean.travel do |proj, name, date|
-        entities = EntityParser.parse_files(proj.filepaths)
-        reports << Report.new(entities, name, date)
-      end
 
-      entities = get_entities(project.filepaths)
-      reports << Report.new(entities, 'HEAD')
+      project = Project.new(project_path, dir_path)
+      delorean = TimeMachine.new(project, { :tags => 8 })
+      delorean.travel do |proj, name, date|
+        reports << collate_report(proj, name, date)
+      end
+      reports << collate_report(project, 'HEAD', Time.now)
 
       reports
     end
 
+    def collate_report(proj, name, date)
+      entities = EntityParser.parse_files(proj.filepaths)
+      Report.new(entities, name, date)
+    end
+
     def renderer(reports, title, filename = nil)
       # CSVRenderer.new(reports, title, filename)
-      # TableRenderer.new(reports, title)
-      ChartRenderer.new(reports, title)
+      TableRenderer.new(reports, title)
+      # ChartRenderer.new(reports, title)
     end
   end
 

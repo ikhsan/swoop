@@ -8,7 +8,7 @@ module Swoop
 
     def initialize(project, options)
       @project = project
-      @tags = options[:tags] || 10
+      @tags = options[:tags] || 8
       @weeks = options[:weeks] || 20
     end
 
@@ -52,6 +52,5 @@ module Swoop
       end
     end
   end
-
 
 end
