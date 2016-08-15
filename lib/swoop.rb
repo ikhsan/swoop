@@ -15,12 +15,23 @@ require "thor"
 module Swoop
 
   class Reporter < Thor
-    # bundle exec bin/swoop --path /Users/ikhsanassaat/Songkick/ios-app/Songkick/Songkick.xcodeproj --dir 'Classes/Models'
+    # bundle exec bin/swoop --path ~/Songkick/ios-app/Songkick/Songkick.xcodeproj --dir 'Classes'
 
-    desc "report", "Create objc swift comparison report for classes from an Xcode project"
-    option :path
-    option :dir
-    option :renderer
+    desc "report", "Create comparison report from Swift and Objective-C files inside your Xcode project"
+    long_desc <<-LONGDESC
+      `swoop` will make Swift and Objective-C comparison report out of your files inside an Xcode project.
+
+      It requires two required options, `path` for specifying your Xcode project's path and `dir` to specify Xcode directory from your project.
+
+      > $ swoop --path ~/YourAwesomeProject/AwesomeProject.xcodeproj --dir 'Classes/Network'
+
+      There are three supported renderer that can be choosen using `renderer` option; `table` (default), `csv` and `graph`.
+
+      > $ swoop --path ~/YourAwesomeProject/AwesomeProject.xcodeproj --dir 'Classes' --renderer graph
+    LONGDESC
+    option :path, :required => true, :desc => "Specify your .xcodeproj path"
+    option :dir, :required => true, :desc => "Specify your folder from your Xcode project"
+    option :renderer, :desc => "Choose your renderer, if not specified will default to `table`", :banner => "['table', 'csv', 'graph']"
     def report
       @project_path = options[:path]
       @dir_path = options[:dir]
