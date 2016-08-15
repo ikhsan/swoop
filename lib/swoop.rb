@@ -20,10 +20,11 @@ module Swoop
     desc "report", "Create objc swift comparison report for classes from an Xcode project"
     option :path
     option :dir
+    option :renderer
     def report
       @project_path = options[:path]
       @dir_path = options[:dir]
-      # @renderer_type = options[:renderer]
+      @renderer_type = options[:renderer]
 
       renderer = renderer_class.new(summary_report, title)
       renderer.render
@@ -44,8 +45,8 @@ module Swoop
           reports << Report.new(entities, name, date)
         end
         reports
-      rescue ExceptionName
-        nil
+      rescue Exception => e
+        raise e
       end
     end
 
@@ -54,9 +55,14 @@ module Swoop
     end
 
     def renderer_class
-      # CSVRenderer
-      # ChartRenderer
-      TableRenderer
+      case @renderer_type
+      when "csv"
+        CSVRenderer
+      when "chart"
+        ChartRenderer
+      else
+        TableRenderer
+      end
     end
   end
 
