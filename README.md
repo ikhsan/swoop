@@ -1,5 +1,7 @@
 # Swoop : Swift to Objective-C conversion reporter
 
+[![Build Status](https://travis-ci.org/ikhsan/swoop.svg?branch=master)](https://travis-ci.org/ikhsan/swoop)
+
 Track your swift code in your Xcode codebase through time. It can go back in time from your git repository and make a comparison report.
 
 ## Installation
