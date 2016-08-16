@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-PROJECT_FIXTURE_PATH = 'spec/fixture/Swoop/Swoop.xcodeproj'
-
 describe Swoop::Project do
 
   let(:project_path) { PROJECT_FIXTURE_PATH }
