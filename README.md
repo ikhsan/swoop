@@ -1,7 +1,10 @@
 # Swoop : Swift to Objective-C conversion reporter
 
-[![Build Status](https://travis-ci.org/ikhsan/swoop.svg?branch=master)](https://travis-ci.org/ikhsan/swoop)
-[![Coverage Status](https://coveralls.io/repos/github/ikhsan/swoop/badge.svg?branch=master)](https://coveralls.io/github/ikhsan/swoop?branch=master)
+[![Build Status](http://img.shields.io/travis/ikhsan/swoop/master.svg)][travis]
+[![Coverage Status](http://img.shields.io/coveralls/ikhsan/swoop/master.svg)][coveralls]
+
+[travis]: https://travis-ci.org/ikhsan/swoop
+[coveralls]: https://coveralls.io/github/ikhsan/swoop?branch=master
 
 Track your swift code in your Xcode codebase through time. It can go back in time from your git repository and make a comparison report.
 
