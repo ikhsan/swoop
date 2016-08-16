@@ -6,7 +6,6 @@ module Swoop
 
     def initialize(entities, name = '', date = Time.now)
       @entities = entities
-
       @date = date
 
       if name.nil? || name == ''

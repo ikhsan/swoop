@@ -8,3 +8,5 @@ require 'swoop/entity_parser'
 require 'swoop/entity'
 require 'swoop/project'
 require 'swoop/report'
+
+PROJECT_FIXTURE_PATH = 'spec/fixture/Swoop/Swoop.xcodeproj'

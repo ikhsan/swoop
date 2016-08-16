@@ -1,19 +1,23 @@
+require 'digest'
+
 module Swoop
 
   class CSVRenderer < Renderer
 
-    attr_reader :filename
-
-    def initialize(reports, title, filename = nil)
-      super(reports, title)
-      @filename = filename
-    end
-
     def render
-     @filename.nil? ? render_to_console : render_to_file
+      File.write(filename, csv)
+      puts "CSV file successfully created at '#{filename}'" if File.file?(filename)
     end
 
     private
+
+    def filename
+      @filename ||= begin
+        reports_name = reports.map { |r| "#{r.name}-#{r.date.to_s}" }.to_s
+        sha = Digest::SHA1.hexdigest(reports_name)
+        "#{sha}.csv"
+      end
+    end
 
     def csv
       @csv ||= begin
@@ -26,16 +30,6 @@ module Swoop
 
         lines.join("\n")
       end
-    end
-
-    def render_to_console
-      puts csv
-    end
-
-    def render_to_file
-      path = "#{filename}.csv"
-      File.write(path, csv)
-      "CSV file successfully created at '#{path}'" if File.file?(path)
     end
   end
 
