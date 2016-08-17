@@ -14,5 +14,5 @@ PROJECT_FIXTURE_PATH = 'spec/fixture/Swoop/Swoop.xcodeproj'
 
 SimpleCov.formatter = Coveralls::SimpleCov::Formatter
 SimpleCov.start do
-  add_filter 'lib'
+  add_filter 'spec'
 end
