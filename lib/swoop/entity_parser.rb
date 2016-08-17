@@ -34,9 +34,9 @@ module Swoop
     TYPE_EXTENSION = 'extension'
     TYPE_CATEGORY = 'category'
 
-    SWIFT_CLASS = /class\s*(\w+)/
-    SWIFT_STRUCT = /struct\s*(\w+)/
-    SWIFT_EXT = /extension\s*(\w+)/
+    SWIFT_CLASS = /^class\s*(\w+)/
+    SWIFT_STRUCT = /^struct\s*(\w+)/
+    SWIFT_EXT = /^extension\s*(\w+)/
     def parse_swift
       classes = file_content.scan(SWIFT_CLASS).flatten.map { |e| Entity.new(e, LANG_SWIFT, TYPE_CLASS) }
       structs = file_content.scan(SWIFT_STRUCT).flatten.map { |e| Entity.new(e, LANG_SWIFT, TYPE_STRUCT) }
@@ -45,10 +45,10 @@ module Swoop
       [ *classes, *structs, *extensions ]
     end
 
-    OBJC_CLASS = /@interface\s*(\w+)\s*:/
-    OBJC_CATEGORY = /@interface\s*(\w+)\s*\((.*)\)/
-    OBJC_STRUCT = /typedef\s*struct\s*{.*?}\s*(\w*)/m
-    OBJC_STRUCT2 = /struct\s*(\w+)/
+    OBJC_CLASS = /^@interface\s*(\w+)\s*:/
+    OBJC_CATEGORY = /^@interface\s*(\w+)\s*\((.*)\)/
+    OBJC_STRUCT = /^typedef\s*struct\s*{.*?}\s*(\w*)/m
+    OBJC_STRUCT2 = /^struct\s*(\w+)/
     def parse_objc
       classes = file_content.scan(OBJC_CLASS).flatten.map { |e| Entity.new(e, LANG_OBJC, TYPE_CLASS) }
       categories = file_content.scan(OBJC_CATEGORY)

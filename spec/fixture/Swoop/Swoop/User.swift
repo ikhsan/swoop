@@ -13,6 +13,8 @@ struct Position {
     var y : Double
 }
 
+// struct _Position {}
+
 class User {
     let firstName : String = ""
     let lastName : String = ""
@@ -20,8 +22,16 @@ class User {
 
 class Admin : User { }
 
+// class _User {
+//     let firstName : String = ""
+// }
+//
+// class _Admin : User { }
+
 extension User {
     var fullName : String {
         return firstName + " " + lastName
     }
 }
+
+// extension _User {}
