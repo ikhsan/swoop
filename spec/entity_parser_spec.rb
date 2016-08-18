@@ -82,15 +82,15 @@ describe Swoop::EntityParser do
         expect(class_names).not_to include("_SpecialViewController")
       end
 
+      it "should ignore commented categories" do
+        ext_names = subject.entities.select { |e| e.type == 'extension' }.map { |e| e.name }
+        expect(ext_names).not_to include("_SpecialViewController")
+      end
+
       it "should ignore commented structs" do
         struct_names = subject.entities.select { |e| e.type == 'struct' }.map { |e| e.name }
         expect(struct_names).not_to include("_Book")
         expect(struct_names).not_to include("_Cooordinate")
-      end
-
-      it "should ignore commented categories" do
-        ext_names = subject.entities.select { |e| e.type == 'extension' }.map { |e| e.name }
-        expect(ext_names).not_to include("_SpecialViewController")
       end
     end
   end

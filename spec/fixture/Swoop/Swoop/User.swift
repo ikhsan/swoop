@@ -20,13 +20,13 @@ class User {
     let lastName : String = ""
 }
 
-class Admin : User { }
+private class Admin : User { }
 
-// class _User {
+// private class _User {
 //     let firstName : String = ""
 // }
 //
-// class _Admin : User { }
+//class _Admin : User { }
 
 extension User {
     var fullName : String {

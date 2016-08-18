@@ -16,7 +16,7 @@
 
 @end
 
-@interface SpecialViewController : ViewController
+  @interface SpecialViewController : ViewController
 
 @end
 
