@@ -16,9 +16,17 @@
 
 @end
 
-@interface SpecialViewController : ViewController
+  @interface SpecialViewController : ViewController
 
 @end
+
+// @interface _ViewController : UIViewController
+//
+// @end
+//
+// @interface _SpecialViewController : _ViewController
+//
+// @end
 
 @interface SpecialViewController (Extension)
 
@@ -27,6 +35,9 @@
 @interface SpecialViewController ()
 
 @end
+
+// @interface _SpecialViewController ()
+// @end
 
 typedef struct {
     unsigned char red;
@@ -45,3 +56,15 @@ typedef struct {
     int lat,
     int long,
 } Coordinate;
+
+// struct _Book
+// {
+//    NSString *title;
+//    NSString *author;
+//    int book_id;
+// } book;
+
+// typedef struct {
+//     int lat,
+//     int long,
+// } _Coordinate;

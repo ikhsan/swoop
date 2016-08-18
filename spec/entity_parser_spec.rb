@@ -23,6 +23,24 @@ describe Swoop::EntityParser do
       user = double(Swoop::Entity, { 'name' => 'User', 'language' => 'swift', 'type' => 'extension' })
       expect(subject.entities).to include(user)
     end
+
+    context "when commented" do
+      it "should ignore commented classes" do
+        class_names = subject.entities.select { |e| e.type == 'class' }.map { |e| e.name }
+        expect(class_names).not_to include("_User")
+        expect(class_names).not_to include("_Admin")
+      end
+
+      it "should ignore commented structs" do
+        struct_names = subject.entities.select { |e| e.type == 'struct' }.map { |e| e.name }
+        expect(struct_names).not_to include("_Position")
+      end
+
+      it "should ignore commented extension" do
+        ext_names = subject.entities.select { |e| e.type == 'extension' }.map { |e| e.name }
+        expect(ext_names).not_to include("_User")
+      end
+    end
   end
 
   context "Parsing Objective-C file" do
@@ -55,6 +73,25 @@ describe Swoop::EntityParser do
 
       struct3 = double(Swoop::Entity, { 'name' => 'Book', 'language' => 'objc', 'type' => 'struct' })
       expect(subject.entities).to include(struct3)
+    end
+
+    context "when commented" do
+      it "should ignore commented classes" do
+        class_names = subject.entities.select { |e| e.type == 'class' }.map { |e| e.name }
+        expect(class_names).not_to include("_ViewController")
+        expect(class_names).not_to include("_SpecialViewController")
+      end
+
+      it "should ignore commented categories" do
+        ext_names = subject.entities.select { |e| e.type == 'extension' }.map { |e| e.name }
+        expect(ext_names).not_to include("_SpecialViewController")
+      end
+
+      it "should ignore commented structs" do
+        struct_names = subject.entities.select { |e| e.type == 'struct' }.map { |e| e.name }
+        expect(struct_names).not_to include("_Book")
+        expect(struct_names).not_to include("_Cooordinate")
+      end
     end
   end
 

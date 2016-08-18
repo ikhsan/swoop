@@ -34,29 +34,29 @@ module Swoop
     TYPE_EXTENSION = 'extension'
     TYPE_CATEGORY = 'category'
 
-    SWIFT_CLASS = /class\s*(\w+)/
-    SWIFT_STRUCT = /struct\s*(\w+)/
-    SWIFT_EXT = /extension\s*(\w+)/
+    SWIFT_CLASS = 'class\s*(\w+)'
+    SWIFT_STRUCT = 'struct\s*(\w+)'
+    SWIFT_EXT = 'extension\s*(\w+)'
     def parse_swift
-      classes = file_content.scan(SWIFT_CLASS).flatten.map { |e| Entity.new(e, LANG_SWIFT, TYPE_CLASS) }
-      structs = file_content.scan(SWIFT_STRUCT).flatten.map { |e| Entity.new(e, LANG_SWIFT, TYPE_STRUCT) }
-      extensions = file_content.scan(SWIFT_EXT).flatten.map { |e| Entity.new(e, LANG_SWIFT, TYPE_EXTENSION) }
+      classes = filter(SWIFT_CLASS).map { |e| Entity.new(e, LANG_SWIFT, TYPE_CLASS) }
+      structs = filter(SWIFT_STRUCT).map { |e| Entity.new(e, LANG_SWIFT, TYPE_STRUCT) }
+      extensions = filter(SWIFT_EXT).map { |e| Entity.new(e, LANG_SWIFT, TYPE_EXTENSION) }
 
       [ *classes, *structs, *extensions ]
     end
 
-    OBJC_CLASS = /@interface\s*(\w+)\s*:/
-    OBJC_CATEGORY = /@interface\s*(\w+)\s*\((.*)\)/
-    OBJC_STRUCT = /typedef\s*struct\s*{.*?}\s*(\w*)/m
-    OBJC_STRUCT2 = /struct\s*(\w+)/
+    OBJC_CLASS = '@interface\s*(\w+)\s*:'
+    OBJC_CATEGORY = '@interface\s*(\w+)\s*\((.*)\)'
+    OBJC_STRUCT ='typedef\s*struct\s*{.*?}\s*(\w*)'
+    OBJC_STRUCT2 = 'struct\s*(\w+)'
     def parse_objc
-      classes = file_content.scan(OBJC_CLASS).flatten.map { |e| Entity.new(e, LANG_OBJC, TYPE_CLASS) }
-      categories = file_content.scan(OBJC_CATEGORY)
+      classes = filter(OBJC_CLASS).map { |e| Entity.new(e, LANG_OBJC, TYPE_CLASS) }
+      categories = filter(OBJC_CATEGORY, false)
         .map { |exts|
           exts.select { |e| !e.empty? }.join('+')
         }
         .map { |e| Entity.new(e, LANG_OBJC, (e.include?('+') ? TYPE_CATEGORY : TYPE_EXTENSION)) }
-      structs = (file_content.scan(OBJC_STRUCT) + file_content.scan(OBJC_STRUCT2)).flatten
+      structs = (filter(OBJC_STRUCT, true, Regexp::MULTILINE) + filter(OBJC_STRUCT2))
         .map { |e| Entity.new(e, LANG_OBJC, TYPE_STRUCT) }
 
       [ *classes, *structs, *categories ]
@@ -64,6 +64,18 @@ module Swoop
 
     def file_content
       @file_content ||= File.read(@filepath)
+    end
+
+    def filter(expression, should_flatten = true, options = 0)
+      # filter out comments
+      regex = Regexp.new("#{expression}", options)
+      contents = file_content.scan(regex)
+      regex_comments = Regexp.new(".*\/\/.*#{expression}", options)
+      commented = file_content.scan(regex_comments)
+
+      filtered = contents - commented
+      return filtered unless should_flatten
+      filtered.flatten
     end
   end
 
