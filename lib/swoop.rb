@@ -15,7 +15,8 @@ require "thor"
 module Swoop
 
   class Reporter < Thor
-    # bundle exec bin/swoop --path ~/Songkick/ios-app/Songkick/Songkick.xcodeproj --dir 'Classes' --filter_tag '^v\d+.\d+
+    # bundle exec bin/swoop --path ~/Songkick/ios-app/Songkick/Songkick.xcodeproj --dir 'Classes' --filter_tag '^v\d+.\d+'
+    # bundle exec bin/swoop --path ~/Songkick/ios-app/Songkick/Songkick.xcodeproj --dir 'Classes' --filter_tag '^v\d+.\d+' --tags 12
 
     desc "report", "Create comparison report from Swift and Objective-C files inside your Xcode project"
     long_desc <<-LONGDESC
@@ -25,21 +26,24 @@ module Swoop
 
       > $ swoop --path ~/YourAwesomeProject/AwesomeProject.xcodeproj --dir 'Classes/Network'
 
-      There are three supported renderer that can be choosen using `renderer` option; `table` (default), `csv` and `graph`.
+      There are three supported renderer that can be choosen using `renderer` option; `table` (default), `csv` and `chart`.
 
-      > $ swoop --path ~/YourAwesomeProject/AwesomeProject.xcodeproj --dir 'Classes' --renderer graph
+      > $ swoop --path ~/YourAwesomeProject/AwesomeProject.xcodeproj --dir 'Classes' --render chart
     LONGDESC
     option :path, :required => true, :desc => "Specify your .xcodeproj path"
     option :dir, :required => true, :desc => "Specify your folder from your Xcode project"
-    option :renderer, :desc => "Choose your renderer, if not specified will default to `table`", :banner => "['table', 'csv', 'graph']"
+    option :render, :desc => "Choose your renderer, if not specified will default to `table`", :banner => "['table', 'csv', 'chart']"
+    option :tags, :desc => "Specify how many tags to include (if not specified then it defaults to 8 latest tags)"
     option :filter_tag, :desc => "Regular expression for filtering tags format"
+    option :weeks, :desc => "Specify how many weeks to include"
     def report
       @project_path = options[:path]
       @dir_path = options[:dir]
-      @renderer_type = options[:renderer]
+      @renderer_type = options[:render]
 
       @filter_tag = options[:filter_tag]
-
+      @tags = options[:tags]
+      @weeks = options[:weeks]
 
       renderer = renderer_class.new(summary_report, title)
       renderer.render
@@ -68,6 +72,8 @@ module Swoop
     def time_machine_options
       options = {}
       options[:filter] = @filter_tag unless @filter_tag.nil? || @filter_tag.empty?
+      options[:tags] = @tags.to_i unless @tags.nil? || @tags.empty?
+      options[:weeks] = @weeks.to_i unless @weeks.nil? || @weeks.empty?
       options
     end
 
