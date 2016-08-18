@@ -6,11 +6,11 @@ module Swoop
 
     attr_reader :project
 
-    def initialize(project, options = {})
+    def initialize(project, options)
       @project = project
       @tags = options[:tags] || 8
       @weeks = options[:weeks] || 0
-      @filter = '^v\d+.\d+'
+      @filter = options[:filter]
     end
 
     def project_path
@@ -50,8 +50,10 @@ module Swoop
     end
 
     def logs_by_tags
-      git.tags
-        .select { |e| e.name.match(@filter) }
+      filtered_tags = git.tags
+      filtered_tags = filtered_tags.select { |e| e.name.match(@filter) } unless @filter.nil? || @filter.empty?
+
+      filtered_tags
         .sort { |a, b| a.log.first.date <=> b.log.first.date }
         .last(@tags)
     end
