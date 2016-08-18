@@ -27,7 +27,6 @@ module Swoop
 
     def render
       empty_target_dir
-      copy_assets
       html_path = render_html
       `open #{html_path}`
     end
@@ -45,10 +44,6 @@ module Swoop
     def empty_target_dir
       FileUtils.rm_rf(target_dir) if Dir.exist?(target_dir)
       FileUtils.mkdir_p(target_dir)
-    end
-
-    def copy_assets
-      FileUtils.cp(File.join(source_dir, "styles.css"), target_dir)
     end
 
     def render_html
