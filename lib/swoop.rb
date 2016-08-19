@@ -15,9 +15,6 @@ require "thor"
 module Swoop
 
   class Reporter < Thor
-    # bundle exec bin/swoop --path ~/Songkick/ios-app/Songkick/Songkick.xcodeproj --dir 'Classes' --filter_tag '^v\d+.\d+'
-    # bundle exec bin/swoop --path ~/Songkick/ios-app/Songkick/Songkick.xcodeproj --dir 'Classes' --filter_tag '^v\d+.\d+' --tags 12
-
     desc "report", "Create comparison report from Swift and Objective-C files inside your Xcode project"
     long_desc <<-LONGDESC
       `swoop` will make Swift and Objective-C comparison report out of your files inside an Xcode project.
