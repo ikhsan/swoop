@@ -9,7 +9,7 @@ module Swoop
     end
 
     def render
-      raise "should be implemented by subclass"
+      # should be implemented by subclass
     end
   end
 
