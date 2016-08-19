@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'swoop/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "swoop"
+  spec.name          = "swoop_report"
   spec.version       = Swoop::VERSION
   spec.authors       = ["Ikhsan Assaat"]
   spec.email         = ["ikhsan.assaat@songkick.com"]
