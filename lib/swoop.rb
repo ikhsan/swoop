@@ -72,8 +72,8 @@ module Swoop
 
     def time_machine_options
       options = {}
-      options[:filter] = @filter_tag unless @filter_tag.nil? || @filter_tag.empty?
       options[:tags] = @tags.to_i unless @tags.nil? || @tags.empty?
+      options[:filter] = @filter_tag unless @filter_tag.nil? || @filter_tag.empty?
       options[:weeks] = @weeks.to_i unless @weeks.nil? || @weeks.empty?
       options
     end
