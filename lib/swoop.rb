@@ -55,24 +55,24 @@ module Swoop
 
     def summary_report
       @summary_report ||= begin
+        reports = []
+
         project = Project.new(@project_path, @dir_path)
         delorean = TimeMachine.new(project, time_machine_options)
-
-        reports = []
         delorean.travel do |proj, name, date|
           entities = EntityParser.parse_files(proj.filepaths)
           reports << Report.new(entities, name, date)
         end
+
         reports
-      rescue Exception => e
-        raise e
       end
     end
 
+
     def time_machine_options
       options = {}
-      options[:filter] = @filter_tag unless @filter_tag.nil? || @filter_tag.empty?
       options[:tags] = @tags.to_i unless @tags.nil? || @tags.empty?
+      options[:filter] = @filter_tag unless @filter_tag.nil? || @filter_tag.empty?
       options[:weeks] = @weeks.to_i unless @weeks.nil? || @weeks.empty?
       options
     end
