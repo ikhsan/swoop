@@ -7,21 +7,42 @@ describe Swoop do
 end
 
 describe Swoop::Reporter do
+  let(:renderer) { double(Swoop::Renderer, { 'render' => '' }) }
+
   before do
     allow($stdout).to receive(:write)
   end
 
   context "Summary Report" do
+    let(:project) { double(Swoop::Project, { :filepaths => "..." }) }
+    let(:delorean) { double(Swoop::TimeMachine, { :travel => "" })}
+    let(:report) { double(Swoop::Report) }
+    let(:entities) { [ double(Swoop::Entity) ] }
 
+    before do
+      allow(Swoop::Project).to receive(:new).and_return(project)
+      allow(Swoop::TimeMachine).to receive(:new).and_return(delorean)
+    end
+
+    it "should send summarised reports to the renderer" do
+      expected_summary_report = [ report ]
+
+      allow(delorean).to receive(:travel).and_yield(project, "master", Time.new("2016-08-16 00:00:00"))
+      expect(Swoop::EntityParser).to receive(:parse_files).and_return(entities)
+      expect(Swoop::Report).to receive(:new).with(entities, "master", Time.new("2016-08-16 00:00:00")).and_return(report)
+      expect(Swoop::TableRenderer).to receive(:new).with(expected_summary_report, any_args).and_return(renderer)
+
+      args = ["--path",  PROJECT_FIXTURE_PATH,  "--dir", "Classes"]
+      described_class.start(args)
+    end
   end
 
   context "Time machine options" do
     let(:project) { [ double(Swoop::Project) ] }
     let(:delorean) { double(Swoop::TimeMachine, { :travel => "" })}
-    let(:renderer) { double(Swoop::Renderer, { 'render' => '' }) }
 
     before do
-      expect(Swoop::Project).to receive(:new).and_return(project)
+      allow(Swoop::Project).to receive(:new).and_return(project)
       allow(Swoop::TableRenderer).to receive(:new).and_return(renderer)
     end
 
@@ -60,7 +81,6 @@ describe Swoop::Reporter do
 
   context "Renderer" do
     let(:report) { [ double(Swoop::Report) ] }
-    let(:renderer) { double(Swoop::Renderer, { 'render' => '' }) }
 
     before do
       allow_any_instance_of(described_class).to receive(:summary_report).and_return(report)

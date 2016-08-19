@@ -55,17 +55,16 @@ module Swoop
 
     def summary_report
       @summary_report ||= begin
-        project = Project.new(@project_path, @dir_path)
-
         reports = []
+
+        project = Project.new(@project_path, @dir_path)
         delorean = TimeMachine.new(project, time_machine_options)
         delorean.travel do |proj, name, date|
           entities = EntityParser.parse_files(proj.filepaths)
           reports << Report.new(entities, name, date)
         end
+
         reports
-      rescue Exception => e
-        raise e
       end
     end
 
