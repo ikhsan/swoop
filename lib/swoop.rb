@@ -32,10 +32,10 @@ module Swoop
     LONGDESC
     option :path, :required => true, :desc => "Specify your .xcodeproj path"
     option :dir, :required => true, :desc => "Specify your folder from your Xcode project"
-    option :render, :desc => "Choose your renderer, if not specified will default to `table`", :banner => "['table', 'csv', 'chart']"
     option :tags, :desc => "Specify how many tags to include (if not specified then it defaults to 8 latest tags)"
     option :filter_tag, :desc => "Regular expression for filtering tags format"
     option :weeks, :desc => "Specify how many weeks to include"
+    option :render, :desc => "Choose your renderer, if not specified will default to `table`", :banner => "['table', 'csv', 'chart']"
     def report
       @project_path = options[:path]
       @dir_path = options[:dir]
