@@ -13,7 +13,7 @@ Track your swift code in your Xcode codebase through time. It can go back in tim
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'swoop'
+gem 'swoop_report'
 ```
 
 And then execute:
@@ -22,7 +22,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install swoop
+    $ gem install swoop_report
 
 ## Usage
 
