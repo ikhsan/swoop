@@ -1,8 +1,10 @@
 # Swoop : Swift to Objective-C conversion reporter
 
+[![Gem](https://img.shields.io/gem/v/swoop.svg)][rubygems]
 [![Build Status](http://img.shields.io/travis/ikhsan/swoop/master.svg)][travis]
 [![Coverage Status](http://img.shields.io/coveralls/ikhsan/swoop/master.svg)][coveralls]
 
+[rubygems]: https://rubygems.org/gems/swoop_report
 [travis]: https://travis-ci.org/ikhsan/swoop
 [coveralls]: https://coveralls.io/github/ikhsan/swoop?branch=master
 
