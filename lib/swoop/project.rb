@@ -39,6 +39,7 @@ module Swoop
 
     def valid_file? (f)
       return false unless f.is_a?(Xcodeproj::Project::Object::PBXFileReference)
+      return false unless File.exist?(f.real_path)
 
       ext = File.extname(f.real_path)
       valid_file_extensions.include?(ext)
