@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Ikhsan Assaat"]
   spec.email         = ["ikhsan.assaat@songkick.com"]
 
-  spec.summary       = "Compare how swift swoops objective-c classes over time"
+  spec.summary       = "Swift to Objective-C conversion reporter"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

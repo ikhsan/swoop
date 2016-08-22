@@ -127,7 +127,7 @@ will output this table in your console
 This will export your report as a csv file in root.
 
 ```bash
-$ swoop --path "~/YourAwesomeProject/AwesomeProject.xcodeproj" --dir 'Classes' --render csv
+$ swoop --path '~/YourAwesomeProject/AwesomeProject.xcodeproj' --dir 'Classes' --render csv
 ```
 
 ##### Chart
@@ -135,7 +135,7 @@ $ swoop --path "~/YourAwesomeProject/AwesomeProject.xcodeproj" --dir 'Classes' -
 This will export your report as a chart in a webpage. It creates an `html` folder in root with the page `index.html` inside of it.
 
 ```bash
-$ swoop --path "~/YourAwesomeProject/AwesomeProject.xcodeproj" --dir 'Classes' --render chart
+$ swoop --path '~/YourAwesomeProject/AwesomeProject.xcodeproj' --dir 'Classes' --render chart
 ```
 
 will output a chart in `./html/index.html`
