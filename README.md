@@ -58,13 +58,13 @@ Say you have your awesome project inside `YourAwesomeProject` folder called `Awe
 Say, you want to compare all of the classes then run :
 
 ```bash
-$ swoop --path "~/YourAwesomeProject/AwesomeProject.xcodeproj" --dir 'Classes'
+$ swoop --path '~/YourAwesomeProject/AwesomeProject.xcodeproj' --dir 'Classes'
 ```
 
 Or, if you want to compare only files inside `Controller`, run :
 
 ```bash
-$ swoop --path "~/YourAwesomeProject/AwesomeProject.xcodeproj" --dir 'Classes/Controller'
+$ swoop --path '~/YourAwesomeProject/AwesomeProject.xcodeproj' --dir 'Classes/Controller'
 ```
 
 ### Options
@@ -82,20 +82,26 @@ Specify which directory where the files that you want to compare based on Xcode 
 Specify a number of how many tags you want to include for comparison. For example, if you want to include the last 10 tags you would run:
 
 ```bash
-$ swoop --path "~/YourAwesomeProject/AwesomeProject.xcodeproj" --dir 'Classes' --tags 10
+$ swoop --path '~/YourAwesomeProject/AwesomeProject.xcodeproj' --dir 'Classes' --tags 10
 ```
 
 #### Filter Tag (`--filter_tag`)
 
-Specify a regular expression that will be applied to tag names. This only applies if tags is used. For example, if
+Specify a regular expression that will be applied to tag names. This only applies if tags is used. For example, if you only want to include tags that look like `v1.0.0`, then you would run:
+
+```bash
+$ swoop --path '~/YourAwesomeProject/AwesomeProject.xcodeproj' --dir 'Classes' --tags 10 --filter_tag 'v\d+.\d+.\d+'
+```
 
 #### Weeks (`--weeks`)
 
 Specify a number of how many weeks you want to include for comparison. For example, if you want to include the last 30 weeks, run :
 
 ```bash
-$ swoop --path "~/YourAwesomeProject/AwesomeProject.xcodeproj" --dir 'Classes' --weeks 30
+$ swoop --path '~/YourAwesomeProject/AwesomeProject.xcodeproj' --dir 'Classes' --weeks 30
 ```
+
+Note: If both `--tags` and `--weeks` are specified, weeks will take priority.
 
 #### Renderer (`--render`)
 
@@ -106,9 +112,9 @@ Specify how do you render the reports. Available renderers are `table`, `csv` an
 This renders a table in your console. Table is used if `--render` is not specified.
 
 ```bash
-$ swoop --path "~/YourAwesomeProject/AwesomeProject.xcodeproj" --dir 'Classes'
+$ swoop --path '~/YourAwesomeProject/AwesomeProject.xcodeproj' --dir 'Classes'
 # or
-$ swoop --path "~/YourAwesomeProject/AwesomeProject.xcodeproj" --dir 'Classes' --render table
+$ swoop --path '~/YourAwesomeProject/AwesomeProject.xcodeproj' --dir 'Classes' --render table
 ```
 
 will output this table in your console

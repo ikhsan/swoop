@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.2
+
+* Empty file checks
+
 ## v0.2.1
 
 * Adding CHANGELOG.md
