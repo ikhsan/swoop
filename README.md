@@ -1,4 +1,4 @@
-# Swoop : Swift to Objective-C conversion reporter
+# Swoop : Swift and Objective-C comparison reporter
 
 [![Gem](https://img.shields.io/gem/v/swoop_report.svg)][rubygems]
 [![Build Status](http://img.shields.io/travis/ikhsan/swoop/master.svg)][travis]
