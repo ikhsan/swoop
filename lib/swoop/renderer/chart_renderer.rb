@@ -33,8 +33,8 @@ module Swoop
 
     private
 
-    def source_dir
-      @source_dir ||= File.expand_path("./lib/swoop/renderer/chart_renderer")
+    def template_path
+      @template_path ||= File.join(File.dirname(__dir__), "renderer/chart_renderer/chart.html.erb")
     end
 
     def target_dir
@@ -47,7 +47,6 @@ module Swoop
     end
 
     def render_html
-      template_path = File.join(source_dir, "chart.html.erb")
       template = ERB.new(File.read(template_path))
       html_content = template.result(binding)
 
