@@ -32,7 +32,7 @@ module Swoop
       end
 
       git.branches[active_branch].checkout
-      yield(project, current_branch, Time.now)
+      yield(project, active_branch, Time.now)
     end
 
     private
