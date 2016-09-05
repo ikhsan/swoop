@@ -18,15 +18,20 @@ module Swoop
     end
 
     def travel
-      current_branch = git.current_branch
+      active_branch = git.current_branch
 
-      logs.each do |t|
-        log = t.log.first
-        git.checkout(log.sha)
-        yield(project, t.name, log.date)
+      begin
+        logs.each do |t|
+          log = t.log.first
+          git.checkout(log.sha)
+          yield(project, t.name, log.date)
+        end
+      rescue => e
+        git.branches[active_branch].checkout
+        raise e
       end
 
-      git.branches[current_branch].checkout
+      git.branches[active_branch].checkout
       yield(project, current_branch, Time.now)
     end
 

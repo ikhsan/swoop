@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.2.3
+
+* Fix path for chart template file
+* Checkout to active branch when error happens
+
 ## v0.2.2
 
 * Empty file checks
