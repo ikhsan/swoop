@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## v0.2.3
+## v0.3.1
+
+* Add line comparison
+
+## v0.3
 
 * Fix path for chart template file
 * Checkout to active branch when error happens

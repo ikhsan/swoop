@@ -1,24 +1,37 @@
 require 'spec_helper'
 
 describe Swoop::Report do
-  subject { described_class.new(entities) }
+  subject { described_class.new(entityInfos) }
 
-  let(:entities) {[
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => false, 'struct?' => true, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => false, 'struct?' => true, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => false, 'struct?' => false, 'extension?' => true }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => false, 'struct?' => false, 'extension?' => true }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => false, 'struct?' => false, 'extension?' => true }),
-
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => false, 'struct?' => true, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => false, 'struct?' => false, 'extension?' => true }),
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => false, 'struct?' => false, 'extension?' => true }),
+  let(:entityInfos) {[
+    double(Swoop::FileInfo, {
+      'line_count' => 30,
+      'swift?' => true,
+      'objc?' => false,
+      'classes' => [ double(Swoop::Entity), double(Swoop::Entity), double(Swoop::Entity) ],
+      'structs' => [
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => true, 'extension?' => false }),
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => true, 'extension?' => false }),
+      ],
+      'extensions' => [
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => false, 'extension?' => true }),
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => false, 'extension?' => true }),
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => false, 'extension?' => true }),
+      ],
+    }),
+    double(Swoop::FileInfo, {
+      'line_count' => 50,
+      'swift?' => false,
+      'objc?' => true,
+      'classes' => [ double(Swoop::Entity), double(Swoop::Entity), double(Swoop::Entity) ],
+      'structs' => [
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => true, 'extension?' => false }),
+      ],
+      'extensions' => [
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => false, 'extension?' => true }),
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => false, 'extension?' => true }),
+      ],
+    })
   ]}
 
   context "Stats" do
@@ -92,6 +105,20 @@ describe Swoop::Report do
 
       it "should have correct objc extensions percentage" do
         expect(subject.objc_extensions_percentage).to eq(40.0)
+      end
+    end
+
+    context "for line comparisons" do
+      it "should have correct total of lines" do
+        expect(subject.lines_count).to eq(80)
+      end
+
+      it "should have correct swift lines percentage" do
+        expect(subject.swift_lines_percentage).to eq(37.5)
+      end
+
+      it "should have correct objc lines percentage" do
+        expect(subject.objc_lines_percentage).to eq(62.5)
       end
     end
   end

@@ -4,8 +4,8 @@ module Swoop
 
     attr_reader :name
 
-    def initialize(entities, name = '', date = Time.now)
-      @entities = entities
+    def initialize(file_infos, name = '', date = Time.now)
+      @file_infos = file_infos
       @date = date
 
       if name.nil? || name == ''
@@ -17,6 +17,29 @@ module Swoop
 
     def date
       @date.strftime("%d-%m-%Y")
+    end
+
+    # Lines
+    def lines_count
+      @lines_count ||= @file_infos.map(&:line_count).reduce(:+)
+    end
+
+    def swift_lines_count
+      @swift_lines_count ||= swift_file_infos.map(&:line_count).reduce(:+)
+    end
+
+    def objc_lines_count
+      @objc_lines_count ||= objc_file_infos.map(&:line_count).reduce(:+)
+    end
+
+    def swift_lines_percentage
+      return 0 if lines_count == 0
+      (swift_lines_count.to_f / lines_count) * 100
+    end
+
+    def objc_lines_percentage
+      return 0 if lines_count == 0
+      (objc_lines_count.to_f / lines_count) * 100
     end
 
     # Classes
@@ -99,47 +122,47 @@ module Swoop
     private
 
     def classes
-      @classes ||= @entities.select(&:class?)
+      @classes ||= @file_infos.flat_map(&:classes)
     end
 
     def structs
-      @structs ||= @entities.select(&:struct?)
+      @structs ||= @file_infos.flat_map(&:structs)
     end
 
     def extensions
-      @extensions ||= @entities.select(&:extension?)
+      @extensions ||= @file_infos.flat_map(&:extensions).uniq
     end
 
-    def swift_entities
-      @swift_entities ||= @entities.select(&:swift?)
+    def swift_file_infos
+      @swift_file_infos ||= @file_infos.select(&:swift?)
     end
 
     def swift_classes
-      @swift_classes ||= swift_entities.select(&:class?)
+      @swift_classes ||= swift_file_infos.flat_map(&:classes)
     end
 
     def swift_structs
-      @swift_structs ||= swift_entities.select(&:struct?)
+      @swift_structs ||= swift_file_infos.flat_map(&:structs)
     end
 
     def swift_extensions
-      @swift_extensions ||= swift_entities.select(&:extension?)
+      @swift_extensions ||= swift_file_infos.flat_map(&:extensions).uniq
     end
 
-    def objc_entities
-      @objc_entities ||= @entities.select(&:objc?)
+    def objc_file_infos
+      @objc_file_infos ||= @file_infos.select(&:objc?)
     end
 
     def objc_classes
-      @objc_classes ||= objc_entities.select(&:class?)
+      @objc_classes ||= objc_file_infos.flat_map(&:classes)
     end
 
     def objc_structs
-      @objc_structs ||= objc_entities.select(&:struct?)
+      @objc_structs ||= objc_file_infos.flat_map(&:structs)
     end
 
     def objc_extensions
-      @objc_extensions ||= objc_entities.select(&:extension?)
+      @objc_extensions ||= objc_file_infos.flat_map(&:extensions).uniq
     end
   end
 end
