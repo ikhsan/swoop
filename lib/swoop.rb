@@ -57,8 +57,8 @@ module Swoop
         project = Project.new(@project_path, @dir_path)
         delorean = TimeMachine.new(project, time_machine_options)
         delorean.travel do |proj, name, date|
-          entities = FileParser.parse(proj.filepaths)
-          reports << Report.new(entities, name, date)
+          file_infos = FileParser.parse(proj.filepaths)
+          reports << Report.new(file_infos, name, date)
         end
 
         reports

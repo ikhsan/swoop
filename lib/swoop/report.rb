@@ -107,7 +107,7 @@ module Swoop
     end
 
     def extensions
-      @extensions ||= @file_infos.flat_map(&:extensions)
+      @extensions ||= @file_infos.flat_map(&:extensions).uniq
     end
 
     def swift_file_infos
@@ -123,7 +123,7 @@ module Swoop
     end
 
     def swift_extensions
-      @swift_extensions ||= swift_file_infos.flat_map(&:extensions)
+      @swift_extensions ||= swift_file_infos.flat_map(&:extensions).uniq
     end
 
     def objc_file_infos
@@ -139,7 +139,7 @@ module Swoop
     end
 
     def objc_extensions
-      @objc_extensions ||= objc_file_infos.flat_map(&:extensions)
+      @objc_extensions ||= objc_file_infos.flat_map(&:extensions).uniq
     end
   end
 end
