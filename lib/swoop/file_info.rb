@@ -20,10 +20,8 @@ module Swoop
 
     def language
       @language ||= begin
-        return Lang::NONE if entities.empty?
-        return Lang::SWIFT if entities.first.swift?
-        return Lang::OBJC if entities.first.objc?
-
+        return Lang::SWIFT if !entities.empty? && entities.first.swift?
+        return Lang::OBJC if !entities.empty? && entities.first.objc?
         Lang::NONE
       end
     end
