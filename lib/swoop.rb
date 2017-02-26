@@ -2,6 +2,7 @@ require "swoop/version"
 require "swoop/project"
 require "swoop/entity"
 require "swoop/file_parser"
+require "swoop/file_info"
 require "swoop/report"
 require "swoop/time_machine"
 
