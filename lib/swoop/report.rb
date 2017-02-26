@@ -19,6 +19,29 @@ module Swoop
       @date.strftime("%d-%m-%Y")
     end
 
+    # Lines
+    def lines_count
+      @lines_count ||= @file_infos.map(&:line_count).reduce(:+)
+    end
+
+    def swift_lines_count
+      @swift_lines_count ||= swift_file_infos.map(&:line_count).reduce(:+)
+    end
+
+    def objc_lines_count
+      @objc_lines_count ||= objc_file_infos.map(&:line_count).reduce(:+)
+    end
+
+    def swift_lines_percentage
+      return 0 if lines_count == 0
+      (swift_lines_count.to_f / lines_count) * 100
+    end
+
+    def objc_lines_percentage
+      return 0 if lines_count == 0
+      (objc_lines_count.to_f / lines_count) * 100
+    end
+
     # Classes
     def classes_count
       classes.count

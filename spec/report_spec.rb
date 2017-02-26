@@ -107,6 +107,20 @@ describe Swoop::Report do
         expect(subject.objc_extensions_percentage).to eq(40.0)
       end
     end
+
+    context "for line comparisons" do
+      it "should have correct total of lines" do
+        expect(subject.lines_count).to eq(80)
+      end
+
+      it "should have correct swift lines percentage" do
+        expect(subject.swift_lines_percentage).to eq(37.5)
+      end
+
+      it "should have correct objc lines percentage" do
+        expect(subject.objc_lines_percentage).to eq(62.5)
+      end
+    end
   end
 
   context "Entities counter" do
