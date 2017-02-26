@@ -39,7 +39,7 @@ module Swoop
       structs = filter(SWIFT_STRUCT).map { |e| Entity.new(e, LANG_SWIFT, TYPE_STRUCT) }
       extensions = filter(SWIFT_EXT).map { |e| Entity.new(e, LANG_SWIFT, TYPE_EXTENSION) }
 
-      FileInfo.new(@filepath, file_content.lines.count, classes, structs, extensions)
+      FileInfo.new(@filepath, swift_lines_count, classes, structs, extensions)
     end
 
     OBJC_CLASS = '@interface\s*(\w+)\s*:'
@@ -56,7 +56,7 @@ module Swoop
       structs = (filter(OBJC_STRUCT, true, Regexp::MULTILINE) + filter(OBJC_STRUCT2))
         .map { |e| Entity.new(e, LANG_OBJC, TYPE_STRUCT) }
 
-      FileInfo.new(@filepath, file_content.lines.count, classes, structs, categories)
+      FileInfo.new(@filepath, objc_lines_count, classes, structs, categories)
     end
 
     def file_content
@@ -73,6 +73,25 @@ module Swoop
       filtered = contents - commented
       return filtered unless should_flatten
       filtered.flatten
+    end
+
+    # Line counters
+
+    def objc_implementation_filepath
+      File.dirname(@filepath) + "/" + File.basename(@filepath, ".*") + ".m"
+    end
+
+    def objc_lines_count
+      count = File.new(@filepath).readlines.size
+      if File.exist?(objc_implementation_filepath)
+        count += File.new(objc_implementation_filepath).readlines.size
+      end
+
+      count
+    end
+
+    def swift_lines_count
+      File.new(@filepath).readlines.size
     end
   end
 
