@@ -10,7 +10,6 @@ module Swoop
 
     private
 
-
     def table
       headings =  ["name", "date", "swift\nclass (%)", "objc\nclass (%)", "swift\nstruct(%)", "objc\nstruct(%)", "swift\next(%)", "objc\next(%)"]
       rows = reports.map do |r|

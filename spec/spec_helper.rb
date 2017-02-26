@@ -7,6 +7,7 @@ Coveralls.wear!
 require 'swoop'
 require 'swoop/file_parser'
 require 'swoop/entity'
+require 'swoop/file_info'
 require 'swoop/project'
 require 'swoop/report'
 

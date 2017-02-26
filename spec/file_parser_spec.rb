@@ -98,13 +98,18 @@ describe Swoop::FileParser do
   context "Parsing multiple files" do
     let(:filepaths) {[
       'spec/fixture/Swoop/Swoop/ViewController.h',
-      'spec/fixture/Swoop/Swoop/ViewController.h'
+      'spec/fixture/Swoop/Swoop/ViewController.h',
+      'spec/fixture/Swoop/Swoop/ViewController.m'
     ]}
 
-    it "should parse all entities without duplicates" do
-      entityInfoss = described_class.parse(filepaths)
-      dupes = entityInfoss.select { |e| entityInfoss.count(e) > 1 }
+    it "should exclude nil value" do
+      entityInfos = described_class.parse(filepaths)
+      expect(entityInfos.count).to eq(1)
+    end
 
+    it "should parse all entities without duplicates" do
+      entityInfos = described_class.parse(filepaths)
+      dupes = entityInfos.select { |e| entityInfos.count(e) > 1 }
       expect(dupes).to be_empty
     end
 

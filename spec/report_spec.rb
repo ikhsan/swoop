@@ -1,24 +1,37 @@
 require 'spec_helper'
 
 describe Swoop::Report do
-  subject { described_class.new(entities) }
+  subject { described_class.new(entityInfos) }
 
-  let(:entities) {[
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => false, 'struct?' => true, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => false, 'struct?' => true, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => false, 'struct?' => false, 'extension?' => true }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => false, 'struct?' => false, 'extension?' => true }),
-    double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => false, 'struct?' => false, 'extension?' => true }),
-
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => false, 'struct?' => true, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => true, 'struct?' => false, 'extension?' => false }),
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => false, 'struct?' => false, 'extension?' => true }),
-    double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => false, 'struct?' => false, 'extension?' => true }),
+  let(:entityInfos) {[
+    double(Swoop::FileInfo, {
+      'line_count' => 30,
+      'swift?' => true,
+      'objc?' => false,
+      'classes' => [ double(Swoop::Entity), double(Swoop::Entity), double(Swoop::Entity) ],
+      'structs' => [
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => true, 'extension?' => false }),
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => true, 'extension?' => false }),
+      ],
+      'extensions' => [
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => false, 'extension?' => true }),
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => false, 'extension?' => true }),
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => false, 'extension?' => true }),
+      ],
+    }),
+    double(Swoop::FileInfo, {
+      'line_count' => 50,
+      'swift?' => false,
+      'objc?' => true,
+      'classes' => [ double(Swoop::Entity), double(Swoop::Entity), double(Swoop::Entity) ],
+      'structs' => [
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => true, 'extension?' => false }),
+      ],
+      'extensions' => [
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => false, 'extension?' => true }),
+        double(Swoop::Entity, { 'class?' => false, 'struct?' => false, 'extension?' => true }),
+      ],
+    })
   ]}
 
   context "Stats" do
