@@ -2,23 +2,46 @@ require 'json'
 
 module Swoop
 
+  class EntityInfo
+
+    attr_reader :filepath, :line_count, :classes, :structs, :extensions
+
+    def initialize(filepath, line_count, classes, structs, extensions)
+      @filepath = filepath
+      @line_count = line_count
+      @classes = classes
+      @structs = structs
+      @extensions = extensions
+    end
+
+    def hash
+      filepath.hash
+    end
+
+    def eql?(comparee)
+      self == comparee
+    end
+
+    def ==(comparee)
+      self.filepath == comparee.filepath
+    end
+
+  end
+
   class FileParser
 
-    attr_reader :entities
+    attr_reader :entityInfos
 
     def self.parse(filepaths)
-      filepaths
-        .map { |p| self.new(p).entities }
-        .flatten
-        .uniq
+      filepaths.map { |p| self.new(p).entityInfos }.uniq
     end
 
     def initialize(filepath)
       @filepath = filepath
     end
 
-    def entities
-      @entitites ||= begin
+    def entityInfos
+      @entityInfos ||= begin
         return parse_swift if File.extname(@filepath) == ".swift"
         return parse_objc if File.extname(@filepath) == ".h"
         []
@@ -42,7 +65,7 @@ module Swoop
       structs = filter(SWIFT_STRUCT).map { |e| Entity.new(e, LANG_SWIFT, TYPE_STRUCT) }
       extensions = filter(SWIFT_EXT).map { |e| Entity.new(e, LANG_SWIFT, TYPE_EXTENSION) }
 
-      [ *classes, *structs, *extensions ]
+      EntityInfo.new(@filepath, file_content.lines.count, classes, structs, extensions)
     end
 
     OBJC_CLASS = '@interface\s*(\w+)\s*:'
@@ -59,7 +82,7 @@ module Swoop
       structs = (filter(OBJC_STRUCT, true, Regexp::MULTILINE) + filter(OBJC_STRUCT2))
         .map { |e| Entity.new(e, LANG_OBJC, TYPE_STRUCT) }
 
-      [ *classes, *structs, *categories ]
+      EntityInfo.new(@filepath, file_content.lines.count, classes, structs, categories)
     end
 
     def file_content
