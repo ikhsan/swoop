@@ -4,7 +4,7 @@ describe Swoop::CSVRenderer do
   let(:report) {
     # rather make an actual report from .xcodeproj rather than mock one
     project = Swoop::Project.new(PROJECT_FIXTURE_PATH, "Swoop/Model")
-    entities = Swoop::EntityParser.parse_files(project.filepaths)
+    entities = Swoop::FileParser.parse(project.filepaths)
     Swoop::Report.new(entities, 'master', Time.new("2016-08-16 00:00:00"))
   }
   subject { described_class.new([report], 'Faux Report') }

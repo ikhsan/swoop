@@ -2,11 +2,11 @@ require 'json'
 
 module Swoop
 
-  class EntityParser
+  class FileParser
 
     attr_reader :entities
 
-    def self.parse_files(filepaths)
+    def self.parse(filepaths)
       filepaths
         .map { |p| self.new(p).entities }
         .flatten

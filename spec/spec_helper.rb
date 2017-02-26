@@ -5,7 +5,7 @@ require 'coveralls'
 Coveralls.wear!
 
 require 'swoop'
-require 'swoop/entity_parser'
+require 'swoop/file_parser'
 require 'swoop/entity'
 require 'swoop/project'
 require 'swoop/report'

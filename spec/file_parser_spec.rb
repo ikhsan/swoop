@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Swoop::EntityParser do
+describe Swoop::FileParser do
   subject { described_class.new(filepath) }
 
   context "Parsing swift file" do
@@ -102,7 +102,7 @@ describe Swoop::EntityParser do
     ]}
 
     it "should parse all entities without duplicates" do
-      entities = described_class.parse_files(filepaths)
+      entities = described_class.parse(filepaths)
       dupes = entities.select { |e| entities.count(e) > 1 }
 
       expect(dupes).to be_empty

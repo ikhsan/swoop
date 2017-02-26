@@ -28,7 +28,7 @@ describe Swoop::Reporter do
       expected_summary_report = [ report ]
 
       allow(delorean).to receive(:travel).and_yield(project, "master", Time.new("2016-08-16 00:00:00"))
-      expect(Swoop::EntityParser).to receive(:parse_files).and_return(entities)
+      expect(Swoop::FileParser).to receive(:parse).and_return(entities)
       expect(Swoop::Report).to receive(:new).with(entities, "master", Time.new("2016-08-16 00:00:00")).and_return(report)
       expect(Swoop::TableRenderer).to receive(:new).with(expected_summary_report, any_args).and_return(renderer)
 
