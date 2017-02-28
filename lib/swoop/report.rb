@@ -19,6 +19,29 @@ module Swoop
       @date.strftime("%d-%m-%Y")
     end
 
+    # Files
+    def files_count
+      @files_count ||= @file_infos.count
+    end
+
+    def swift_files_count
+      @swift_files_count ||= swift_file_infos.count
+    end
+
+    def objc_files_count
+      @objc_files_count ||= objc_file_infos.count
+    end
+
+    def swift_files_percentage
+      return 0 if files_count == 0
+      (swift_files_count.to_f / files_count) * 100
+    end
+
+    def objc_files_percentage
+      return 0 if files_count == 0
+      (objc_files_count.to_f / files_count) * 100
+    end
+
     # Lines
     def lines_count
       @lines_count ||= @file_infos.map(&:line_count).reduce(:+)

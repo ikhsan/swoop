@@ -121,6 +121,20 @@ describe Swoop::Report do
         expect(subject.objc_lines_percentage).to eq(62.5)
       end
     end
+
+    context "for file comparisons" do
+      it "should have correct total of files" do
+        expect(subject.files_count).to eq(2)
+      end
+
+      it "should have correct swift files" do
+        expect(subject.swift_files_percentage).to eq(50.0)
+      end
+
+      it "should have correct objc files" do
+        expect(subject.objc_files_percentage).to eq(50.0)
+      end
+    end
   end
 
   context "Entities counter" do
