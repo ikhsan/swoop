@@ -3,6 +3,7 @@
 ## v0.3.1
 
 * Add line comparison
+* Add file comparison
 
 ## v0.3
 
