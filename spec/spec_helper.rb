@@ -4,10 +4,6 @@ require 'simplecov'
 require 'coveralls'
 Coveralls.wear!
 
-# RSpec.configure do |config|
-#   config.filter_run :focus => true
-# end
-
 require 'swoop'
 require 'swoop/file_parser'
 require 'swoop/entity'
