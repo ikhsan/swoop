@@ -19,6 +19,29 @@ module Swoop
       @date.strftime("%d-%m-%Y")
     end
 
+    # Files
+    def files_count
+      @files_count ||= @file_infos.count
+    end
+
+    def swift_files_count
+      @swift_files_count ||= swift_file_infos.count
+    end
+
+    def objc_files_count
+      @objc_files_count ||= objc_file_infos.count
+    end
+
+    def swift_files_percentage
+      return 0 if files_count == 0
+      (swift_files_count.to_f / files_count) * 100
+    end
+
+    def objc_files_percentage
+      return 0 if files_count == 0
+      (objc_files_count.to_f / files_count) * 100
+    end
+
     # Lines
     def lines_count
       @lines_count ||= @file_infos.map(&:line_count).reduce(:+)
@@ -111,12 +134,6 @@ module Swoop
     def objc_extensions_percentage
       return 0 if extensions_count == 0
       (objc_extensions_count.to_f / extensions_count) * 100
-    end
-
-    def to_s
-      "Class | swift : #{swift_classes_count} (#{'%.02f' % swift_classes_percentage}%) , objc : #{objc_classes_count} (#{'%.02f' % objc_classes_percentage}%), total: #{classes_count} \n" +
-      "Structs | swift : #{swift_structs_count} (#{'%.02f' % swift_structs_percentage}%) , objc : #{objc_structs_count} (#{'%.02f' % objc_structs_percentage}%), total: #{structs_count} \n" +
-      "Extensions | swift : #{swift_extensions_count} (#{'%.02f' % swift_extensions_percentage}%) , objc : #{objc_extensions_count} (#{'%.02f' % objc_extensions_percentage}%), total: #{extensions_count}"
     end
 
     private
