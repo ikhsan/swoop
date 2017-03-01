@@ -18,9 +18,18 @@ module Swoop
     end
 
     def table
-      headings =  ["name", "date", "swift\nlines (%)", "objc\nlines (%)", "swift\nclass (%)", "objc\nclass (%)", "swift\nstruct(%)", "objc\nstruct(%)", "swift\next(%)", "objc\next(%)"]
+      headings =  [
+        "name", "date",
+        "swift\nfiles (%)", "objc\nfiles (%)",
+        "swift\nlines (%)", "objc\nlines (%)",
+        "swift\nclass (%)", "objc\nclass (%)",
+        "swift\nstruct(%)", "objc\nstruct(%)",
+        "swift\next(%)", "objc\next(%)"
+      ]
       rows = reports.map do |r|
         [r.name,r.date,
+          "#{'%.02f' % r.swift_files_percentage} (#{f r.swift_files_count}/#{f r.files_count})",
+          "#{'%.02f' % r.objc_files_percentage} (#{f r.objc_files_count}/#{f r.files_count})",
           "#{'%.02f' % r.swift_lines_percentage} (#{f r.swift_lines_count}/#{f r.lines_count})",
           "#{'%.02f' % r.objc_lines_percentage} (#{f r.objc_lines_count}/#{f r.lines_count})",
           "#{'%.02f' % r.swift_classes_percentage} (#{r.swift_classes_count}/#{r.classes_count})",

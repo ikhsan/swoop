@@ -16,13 +16,29 @@ module Swoop
 
     def entityInfos
       @entityInfos ||= begin
-        return parse_swift if File.extname(@filepath) == ".swift"
-        return parse_objc if File.extname(@filepath) == ".h"
+        return parse_swift if swift_file?
+        return parse_objc if objc_header_file? || objc_implementation_file?
         nil
       end
     end
 
     private
+
+    def swift_file?
+      File.extname(@filepath) == ".swift"
+    end
+
+    def objc_header_file?
+      File.extname(@filepath) == ".h"
+    end
+
+    def objc_implementation_file?
+      File.extname(@filepath) == ".m"
+    end
+
+    def lines_count
+      File.new(@filepath).readlines.size
+    end
 
     LANG_SWIFT = 'swift'
     LANG_OBJC = 'objc'
@@ -39,7 +55,7 @@ module Swoop
       structs = filter(SWIFT_STRUCT).map { |e| Entity.new(e, LANG_SWIFT, TYPE_STRUCT) }
       extensions = filter(SWIFT_EXT).map { |e| Entity.new(e, LANG_SWIFT, TYPE_EXTENSION) }
 
-      FileInfo.new(@filepath, swift_lines_count, classes, structs, extensions)
+      FileInfo.new(@filepath, Lang::SWIFT, lines_count, classes, structs, extensions)
     end
 
     OBJC_CLASS = '@interface\s*(\w+)\s*:'
@@ -47,6 +63,9 @@ module Swoop
     OBJC_STRUCT ='typedef\s*struct\s*{.*?}\s*(\w*)'
     OBJC_STRUCT2 = 'struct\s*(\w+)'
     def parse_objc
+      # Only counting the lines and the file
+      return FileInfo.new(@filepath, Lang::OBJC, lines_count, [], [], []) if objc_implementation_file?
+
       classes = filter(OBJC_CLASS).map { |e| Entity.new(e, LANG_OBJC, TYPE_CLASS) }
       categories = filter(OBJC_CATEGORY, false)
         .map { |exts|
@@ -56,7 +75,7 @@ module Swoop
       structs = (filter(OBJC_STRUCT, true, Regexp::MULTILINE) + filter(OBJC_STRUCT2))
         .map { |e| Entity.new(e, LANG_OBJC, TYPE_STRUCT) }
 
-      FileInfo.new(@filepath, objc_lines_count, classes, structs, categories)
+      FileInfo.new(@filepath, Lang::OBJC, lines_count, classes, structs, categories)
     end
 
     def file_content
@@ -75,24 +94,6 @@ module Swoop
       filtered.flatten
     end
 
-    # Line counters
-
-    def objc_implementation_filepath
-      File.dirname(@filepath) + "/" + File.basename(@filepath, ".*") + ".m"
-    end
-
-    def objc_lines_count
-      count = File.new(@filepath).readlines.size
-      if File.exist?(objc_implementation_filepath)
-        count += File.new(objc_implementation_filepath).readlines.size
-      end
-
-      count
-    end
-
-    def swift_lines_count
-      File.new(@filepath).readlines.size
-    end
   end
 
 end

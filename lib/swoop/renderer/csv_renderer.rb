@@ -22,10 +22,10 @@ module Swoop
     def csv
       @csv ||= begin
         lines = []
-        lines << "name,date,swift lines,swift lines %,objc lines,objc lines %,total lines,swift class,swift class %,objc class,objc class %,total class,swift struct,swift struct %,objc struct,objc struct %,total struct,swift extension,swift extension %,objc extension,objc extension %,total extension"
+        lines << "name,date,swift lines,swift lines %,objc lines,objc lines %,total lines,swift files,swift files %,objc files,objc files %,total files,swift class,swift class %,objc class,objc class %,total class,swift struct,swift struct %,objc struct,objc struct %,total struct,swift extension,swift extension %,objc extension,objc extension %,total extension"
 
         reports.each do |report|
-          lines << "#{report.name},#{report.date},#{report.swift_lines_count},#{'%.02f' % report.swift_lines_percentage},#{report.objc_lines_count},#{'%.02f' % report.objc_lines_percentage},#{report.lines_count},#{report.swift_classes_count},#{'%.02f' % report.swift_classes_percentage},#{report.objc_classes_count},#{'%.02f' % report.objc_classes_percentage},#{report.classes_count},#{report.swift_structs_count},#{'%.02f' % report.swift_structs_percentage},#{report.objc_structs_count},#{'%.02f' % report.objc_structs_percentage},#{report.structs_count},#{report.swift_extensions_count},#{'%.02f' % report.swift_extensions_percentage},#{report.objc_extensions_count},#{'%.02f' % report.objc_extensions_percentage},#{report.extensions_count}"
+          lines << "#{report.name},#{report.date},#{report.swift_lines_count},#{'%.02f' % report.swift_lines_percentage},#{report.objc_lines_count},#{'%.02f' % report.objc_lines_percentage},#{report.lines_count},#{report.swift_files_count},#{'%.02f' % report.swift_files_percentage},#{report.objc_files_count},#{'%.02f' % report.objc_files_percentage},#{report.files_count},#{report.swift_classes_count},#{'%.02f' % report.swift_classes_percentage},#{report.objc_classes_count},#{'%.02f' % report.objc_classes_percentage},#{report.classes_count},#{report.swift_structs_count},#{'%.02f' % report.swift_structs_percentage},#{report.objc_structs_count},#{'%.02f' % report.objc_structs_percentage},#{report.structs_count},#{report.swift_extensions_count},#{'%.02f' % report.swift_extensions_percentage},#{report.objc_extensions_count},#{'%.02f' % report.objc_extensions_percentage},#{report.extensions_count}"
         end
 
         lines.join("\n")

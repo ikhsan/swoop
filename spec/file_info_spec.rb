@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe Swoop::FileInfo do
-  subject { described_class.new(filepath, line_count, classes, structs, extensions) }
+  subject { described_class.new(filepath, language, line_count, classes, structs, extensions) }
 
   context "Objective-C file" do
     let(:filepath) { 'spec/fixture/Swoop/Swoop/ViewController.h' }
+    let(:language) { Swoop::Lang::OBJC }
     let(:line_count) { 30 }
     let(:classes) {[
       double(Swoop::Entity, { 'swift?' => false, 'objc?' => true, 'class?' => true, 'struct?' => false, 'extension?' => false }),
@@ -31,6 +32,7 @@ describe Swoop::FileInfo do
 
   context "Swift file" do
     let(:filepath) { 'spec/fixture/Swoop/Swoop/User.swift' }
+    let(:language) { Swoop::Lang::SWIFT }
     let(:line_count) { 30 }
     let(:classes) {[
       double(Swoop::Entity, { 'swift?' => true, 'objc?' => false, 'class?' => true, 'struct?' => false, 'extension?' => false }),

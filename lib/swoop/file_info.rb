@@ -8,22 +8,15 @@ module Swoop
 
   class FileInfo
 
-    attr_reader :filepath, :line_count, :classes, :structs, :extensions
+    attr_reader :filepath, :language, :line_count, :classes, :structs, :extensions
 
-    def initialize(filepath, line_count, classes, structs, extensions)
+    def initialize(filepath, language, line_count, classes, structs, extensions)
       @filepath = filepath
+      @language = language
       @line_count = line_count
       @classes = classes
       @structs = structs
       @extensions = extensions
-    end
-
-    def language
-      @language ||= begin
-        return Lang::SWIFT if !entities.empty? && entities.first.swift?
-        return Lang::OBJC if !entities.empty? && entities.first.objc?
-        Lang::NONE
-      end
     end
 
     def swift?

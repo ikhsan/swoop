@@ -136,12 +136,6 @@ module Swoop
       (objc_extensions_count.to_f / extensions_count) * 100
     end
 
-    def to_s
-      "Class | swift : #{swift_classes_count} (#{'%.02f' % swift_classes_percentage}%) , objc : #{objc_classes_count} (#{'%.02f' % objc_classes_percentage}%), total: #{classes_count} \n" +
-      "Structs | swift : #{swift_structs_count} (#{'%.02f' % swift_structs_percentage}%) , objc : #{objc_structs_count} (#{'%.02f' % objc_structs_percentage}%), total: #{structs_count} \n" +
-      "Extensions | swift : #{swift_extensions_count} (#{'%.02f' % swift_extensions_percentage}%) , objc : #{objc_extensions_count} (#{'%.02f' % objc_extensions_percentage}%), total: #{extensions_count}"
-    end
-
     private
 
     def classes
